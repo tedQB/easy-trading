@@ -7,7 +7,7 @@ import interval
 
 class RetailMonitoring():
 
-    __BASE_URL = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=2019-01-18&mkt=069001005&code=ag1906&sc=AG&cb=callback&callback=callback&_=1547818454455'
+    __BASE_URL = 'http://data.eastmoney.com/DataCenter_V3/Chart/cjsj/weeklystockaccountsnew.ashx?isxml=true'
     __MARKET_EMOTION_ZH = ['极度悲观', '悲观', '乐观', '极度乐观', '疯狂']
     __MARKET_EMOTION_EN = ['Extreme Pessimism', 'Pessimism', 'Optimistic', 'Extreme Optimistic', 'Crazy']
 
@@ -38,17 +38,11 @@ class RetailMonitoring():
         # emoton status
 
     def _get_raw_date(self):
-        content = requests.get(self.__BASE_URL).content
-        #raw_date = json.loads(response.text)
-        rex = re.compile(r'\w+[(]{1}(.*)[)]{1}')
-        content = rex.findall(cont)
-
-        print content;
-        '''
+        response = requests.get(self.__BASE_URL)
+        raw_date = json.loads(response.text)
         date = raw_date['X'].split(',')
         increment = list(map(float,raw_date['Y'][0].split(',')))
         return {'date': date, 'increment': increment}
-        '''
 
     def _generate_ts(self, data_dict):
         ts = pd.Series(data_dict['increment'], index=pd.to_datetime(data_dict['date']))
@@ -92,11 +86,9 @@ class RetailMonitoring():
         return self._check_emotion_status(data)
 
 if __name__ == '__main__':
-    '''
     rm = RetailMonitoring()
     print('最近一周新增开户数： %s 万' % rm.get_current_data())
     print('当前情绪指数： %s' % rm.get_current_emotion_status())
     print('历史一周最多新增开户数： %s 万' % rm.get_max())
     print('历史一周最少新增开户数： %s 万' % rm.get_min())
     print(rm.get_data())
-    '''

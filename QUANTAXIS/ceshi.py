@@ -1,21 +1,15 @@
-#!/usr/bin/python
-# coding: UTF-8
-
-
-import QUANTAXIS as QA
+import urllib.request
+import urllib.parse
+import json
+import re
+import time
 import datetime
 import pymysql
-import time
+import sys
+
+from item import get_newContractList, get_market_own
 from datetime import timedelta
-
-def date_add(date_str, days_count=1):
-    date_list = time.strptime(date_str, "%Y-%m-%d")
-    y, m, d = date_list[:3]
-    delta = timedelta(days=days_count)
-    date_result = datetime.datetime(y, m, d) + delta
-    date_result = date_result.strftime("%Y-%m-%d")
-    return date_result
-
+from endPrice import end_price_get
 
 def connDB():
    db = pymysql.connect(
@@ -29,56 +23,135 @@ def connDB():
    return db
 
 
-def fetchData(futureName,starttime):
-   return QA.QAFetch.QATdx.QA_fetch_get_future_day(
-       futureName,starttime, datetime.datetime.now().strftime('%Y-%m-%d'))
+def insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum, kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice):
+    insertSql = "replace INTO futures (futureName,cifcoName,riqi,jiesuan,chengjiaoNum,duodanNum,kongdanNum,jingduoNum,jingkongNum,longEvePrice,shortEvePrice) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
+                futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum, kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+    try:
+        conn = connDB()
+        cur = conn.cursor()
+        cur.execute(insertSql)
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+    finally:
+        conn.close()
 
 
-def task(futureName, starttime):
-   QA.QA_util_log_info(futureName+'期货收盘价')
-   df1 = fetchData(futureName, starttime)
-   close = df1[u'close']
-   date = df1[u'date']
-   idx = len(date)
-   while idx > 0:
-      idx -= 1
-      date_val = date[idx]
-      close_val = close[idx]
+def get_winners_list_data(code, sc, mkt, nowTime):
+    url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd='+nowTime+'&mkt='+mkt+'&code='+code+'&sc='+sc+'&cb=callback&callback=callback&_=1551263991687'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
+    }
+    request = urllib.request.Request(url=url, headers=headers)
+    response = urllib.request.urlopen(request)
+    try:
+        j = json.loads(re.findall(r'^\w+\((.*)\)$',
+                                   response.read().decode('utf-8'))[0])
+        for i in range(len(j[0]['净多头龙虎榜'])):
+            x = j[0]['净多头龙虎榜'][i].split(",")
+            cmd = x[0]
+            cifcoName = x[1]  
+            get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime)
+        
+    except json.decoder.JSONDecodeError:
+        print ("catch error")
 
-      insertSql = "replace INTO Price (futureName, riqi, endPrice) VALUES('%s','%s',%d)" % (
-          futureName, date_val, close_val)
-      try:
-         conn = connDB()
-         cur = conn.cursor()
-         cur.execute(insertSql)
-         conn.commit()
+    #mkt=069001007 大连商品期货交易所 sc=名称缩写M(豆粕) cmd=80098329（期货公司代码）code=m1905(合约代码小写)
 
-      except Exception as e:
-         conn.rollback()
-      finally:
-         print (date_val+futureName+"合约采集结束")
-         conn.close()
 
-if __name__ == '__main__':
-   today = datetime.datetime.now().strftime('%Y-%m-%d')
-   task('J1905', date_add(today,-7))   #焦炭
-   task('RB1905', date_add(today,-7))  #螺纹钢
-   task('HC1905', date_add(today,-7))  #热卷
-   task('I1905', date_add(today,-7))   #铁矿石
-   task('RU1905', date_add(today,-7))  #橡胶
-   task('M1905', date_add(today,-7))   #豆粕
-   task('AP1905', date_add(today,-7))  #苹果
-   task('TA1905', date_add(today, -7)) #PTA
-   task('FU1905', date_add(today,-7))  #燃油
-   task('EG1906', date_add(today, -7)) #乙二醇
-   task('BU1906', date_add(today, -7))  # 沥青
-   task('FG1905', date_add(today, -7))  # 玻璃
-   task('RM1905', date_add(today, -7))  # 菜粕
-   task('ZC1905', date_add(today, -7))  # 郑煤
-   task('P1905', date_add(today, -7))  # 棕榈
-   task('SM1905', date_add(today, -7))  # 硅锰
-   task('SF1905', date_add(today, -7))  # 硅铁
-   task('MA1905', date_add(today, -7))  # 郑醇
-   task('JM1905', date_add(today, -7))  # 焦煤
-   task('SP1906', date_add(today, -7))  # 纸浆
-   task('CF1905', date_add(today, -7))  # 郑棉
+def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime):
+
+    url2 = "http://m.data.eastmoney.com/api/Futures/TppGetTimelien?mtk="+mkt+"&code="+code+"&sc%5B%5D="+sc+"&cmd="+cmd+"&pageNum=1&pageSize=20"
+
+    print(url2)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36'
+    }
+    request = urllib.request.Request(url=url2, headers=headers)
+    response = urllib.request.urlopen(request)
+    try:
+        j = json.loads(re.findall(r'^(.*)$',
+                              response.read().decode('utf-8'))[0])
+        for row in j['result']:
+            riqi = row['日期']
+            jiesuan = row['结算价']
+            chengjiaoNum = row['成交量']
+            duodanNum = row['多单量']
+            kongdanNum = row['空头持仓']
+            jingduoNum = row['净多单']
+            jingkongNum = row['净空单']
+            longEvePrice = row['多头持仓均价']
+            shortEvePrice = row['空头持仓均价']
+            futureName = code.lower()
+            insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
+                       kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+
+    except json.decoder.JSONDecodeError:
+        print("catch error", code)
+
+        #print(nowTime+" "+code+"合约采集结束")
+    
+
+
+def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
+    url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=4" + "&mkt=" + mkt + "&sc=" + sc + "&cmd=" + cmd + "&code=" + code + "&name=2&cb=callback"
+    print(url)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
+    }
+    request = urllib.request.Request(url=url, headers=headers)
+    response = urllib.request.urlopen(request)
+    try:
+        j = json.loads(re.findall(r'^\w+\((.*)\)$',
+                                  response.read().decode('utf-8'))[0])
+        for i in range(len(j)):      
+            row = j[i].split(",")
+            riqi = row[0]
+            jiesuan = row[1]
+            chengjiaoNum =row[2]
+            duodanNum = row[4]
+            kongdanNum = row[7]
+            jingduoNum = row[10]
+            jingkongNum = row[11]
+            longEvePrice = row[5]
+            shortEvePrice = row[8]
+            futureName = code.lower()
+
+            insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
+                       kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+
+    except json.decoder.JSONDecodeError:
+        print("catch error", code)
+
+        #print(nowTime+" "+code+"合约采集结束")
+
+
+if __name__ == '__main__':  
+    if len(sys.argv)==1:
+        nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
+    else:
+        nowTime = sys.argv[1]
+
+    end_price_get(nowTime)
+    
+    newContract = get_newContractList(nowTime)
+    if newContract!=None:
+        lens = len(newContract)
+        for x in newContract:
+            try:
+                code = x['newContract']  # 最新合约
+                sc = x['value'] #名称缩写大写
+                mkt = get_market_own(sc) #归属市场
+                lens=lens-1
+                print(code+"合约采集开始,还剩"+str(lens)+"条")
+                get_winners_list_data(code, sc, mkt, nowTime)
+                print(nowTime+" "+code+"合约采集结束")
+
+            except KeyError:
+                break;
+
+
+
+#aw_data = json.loads(response.read().decode("utf8"))
+
+#print(aw_data)
