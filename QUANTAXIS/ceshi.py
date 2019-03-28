@@ -48,22 +48,31 @@ def get_winners_list_data(code, sc, mkt, nowTime):
         j = json.loads(re.findall(r'^\w+\((.*)\)$',
                                    response.read().decode('utf-8'))[0])
         for i in range(len(j[0]['净多头龙虎榜'])):
-            x = j[0]['净多头龙虎榜'][i].split(",")
-            cmd = x[0]
-            cifcoName = x[1]  
-            get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime)
+            x1 = j[0]['净多头龙虎榜'][i].split(",")
+            cmd1 = x1[0]
+            cifcoName1 = x1[1]  
+            get_position_buildin_mobile(
+                mkt, sc, cmd1, code, cifcoName1, nowTime, "净多头")
         
+        for m in range(len(j[0]['净空头龙虎榜'])):
+            x2 = j[0]['净空头龙虎榜'][m].split(",")
+            cmd2 = x2[0]
+            cifcoName2 = x2[1]  
+            get_position_buildin_mobile(
+                mkt, sc, cmd2, code, cifcoName2, nowTime, "净空头")
+
+
     except json.decoder.JSONDecodeError:
         print ("catch error")
 
     #mkt=069001007 大连商品期货交易所 sc=名称缩写M(豆粕) cmd=80098329（期货公司代码）code=m1905(合约代码小写)
 
 
-def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime):
+def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
 
     url2 = "http://m.data.eastmoney.com/api/Futures/TppGetTimelien?mtk="+mkt+"&code="+code+"&sc%5B%5D="+sc+"&cmd="+cmd+"&pageNum=1&pageSize=20"
 
-    print(url2)
+    print(url2+tit)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36'
     }
@@ -72,19 +81,22 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime):
     try:
         j = json.loads(re.findall(r'^(.*)$',
                               response.read().decode('utf-8'))[0])
+        i = 3
         for row in j['result']:
-            riqi = row['日期']
-            jiesuan = row['结算价']
-            chengjiaoNum = row['成交量']
-            duodanNum = row['多单量']
-            kongdanNum = row['空头持仓']
-            jingduoNum = row['净多单']
-            jingkongNum = row['净空单']
-            longEvePrice = row['多头持仓均价']
-            shortEvePrice = row['空头持仓均价']
-            futureName = code.lower()
-            insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
-                       kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+            if i>0:
+                riqi = row['日期']
+                jiesuan = row['结算价']
+                chengjiaoNum = row['成交量']
+                duodanNum = row['多单量']
+                kongdanNum = row['空头持仓']
+                jingduoNum = row['净多单']
+                jingkongNum = row['净空单']
+                longEvePrice = row['多头持仓均价']
+                shortEvePrice = row['空头持仓均价']
+                futureName = code.lower()
+                insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
+                        kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+                i=i-1
 
     except json.decoder.JSONDecodeError:
         print("catch error", code)
@@ -104,21 +116,23 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
     try:
         j = json.loads(re.findall(r'^\w+\((.*)\)$',
                                   response.read().decode('utf-8'))[0])
-        for i in range(len(j)):      
-            row = j[i].split(",")
-            riqi = row[0]
-            jiesuan = row[1]
-            chengjiaoNum =row[2]
-            duodanNum = row[4]
-            kongdanNum = row[7]
-            jingduoNum = row[10]
-            jingkongNum = row[11]
-            longEvePrice = row[5]
-            shortEvePrice = row[8]
-            futureName = code.lower()
-
-            insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
-                       kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+        i = 3
+        for i in range(len(j)):
+            if i > 0:
+                row = j[i].split(",")
+                riqi = row[0]
+                jiesuan = row[1]
+                chengjiaoNum =row[2]
+                duodanNum = row[4]
+                kongdanNum = row[7]
+                jingduoNum = row[10]
+                jingkongNum = row[11]
+                longEvePrice = row[5]
+                shortEvePrice = row[8]
+                futureName = code.lower()
+                insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
+                        kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
+                i = i-1
 
     except json.decoder.JSONDecodeError:
         print("catch error", code)
@@ -148,7 +162,8 @@ if __name__ == '__main__':
                 print(nowTime+" "+code+"合约采集结束")
 
             except KeyError:
-                break;
+                print(sc+"不存在")
+                continue;
 
 
 
