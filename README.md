@@ -25,5 +25,5 @@ eg: ceshi.py 2019-04-09
 * 数据量太大，不便每日按时存数据库，直接就解析线上的json接口。
   
 1. 自制门户，方便看财经新闻，搜索，提升获取信息效率。
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_15.png" width=300>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_17.png" width=300>
+<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_15.png" width=800>
+<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_17.png" width=800>
