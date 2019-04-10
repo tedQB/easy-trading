@@ -4,14 +4,17 @@
 ## QUANTAXIS
 ### 2019-04-10 
 * single.py 命令行获取单个品种过去120天的收盘价，空头多头主力信息，以便决策
+```
 python3 single.py code|[time]
 eg: single.py FU1909 2019-04-09
+```
 
 ## 2019-01-10
 * ceshi.py 获取大商所，郑商所，上交所，股指期货所有合约收盘价信息，
+```
 python3 single.py |[time]
 eg: ceshi.py 2019-04-09
-
+```
 ## tampermonkey
 
 自制门户，方便看财经新闻，搜索，提升获取信息效率。
