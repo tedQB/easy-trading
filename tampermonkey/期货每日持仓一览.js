@@ -10,135 +10,201 @@
 
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // Your code here...
-  // Your code here...
+    // Your code here...
 
-   // $(".s6").next().remove();
-   // $(".s6").remove();
+    // $(".s6").next().remove();
+    // $(".s6").remove();
 
 
-    var $=jQuery;
+    var $ = jQuery;
     $("#mainContent").before("<div class='ss9' style=' height:230px; '></div>");
+    $("#mainContent").before("<div class='bt2'><button id='caiji'>采集</button></div>")
+    $("#mainContent").before("<input type='hidden' id='mkt' />")
+    $("#mainContent").before("<input type='hidden' id='sc' />")
+    $("#mainContent").before("<input type='hidden' id='code' />")
+
     $('.ss9').append('<div class="sjs js" id="sjs"><h5>上海期货交易所</h5><div value="AG">沪银</div><div value="AL">沪铝</div><div value="AU">沪金</div><div value="BU">沥青</div><div value="CU">沪铜</div><div value="FU">燃油</div><div value="HC">热卷</div><div value="NI">镍</div><div value="PB">沪铅</div><div value="RB">螺纹钢</div><div value="RU">橡胶</div><div value="SN">锡</div><div value="SP">纸浆</div><div value="ZN">沪锌</div></div>');
-    $('.ss9').append('<div class="djs js" id="djs"><h5>大连期货交易所</h5><div value="A">豆一</div><div value="B">豆二</div><div value="C">玉米</div><div value="CS">玉米淀粉</div><div value="I">铁矿石</div><div value="J">焦炭</div><div value="JD">鸡蛋</div><div value="JM">焦煤</div><div value="L">塑料</div><div value="M">豆粕</div><div value="P">棕榈</div><div value="PP">聚丙烯</div><div value="V">PVC</div><div value="Y">豆油</div></div>');
+    $('.ss9').append('<div class="djs js" id="djs"><h5>大连期货交易所</h5><div value="A">豆一</div><div value="B">豆二</div><div value="C">玉米</div><div value="CS">玉米淀粉</div><div value="I">铁矿石</div><div value="J">焦炭</div><div value="JD">鸡蛋</div><div value="JM">焦煤</div><div value="L">塑料</div><div value="M">豆粕</div><div value="P">棕榈</div><div value="PP">聚丙烯</div><div value="V">PVC</div><div value="Y">豆油</div><div value="EG">乙二醇</div></div>');
     $('.ss9').append('<div class="zjs js" id="zjs"><h5>郑州期货交易所</h5><div value="ZC">郑煤</div><div value="WH">强麦</div><div value="TA">PTA</div><div value="SR">白糖</div><div value="SM">硅锰</div><div value="SF">硅铁</div><div value="RM">菜粕</div><div value="PM">普麦</div><div value="OI">菜油</div><div value="MA">甲醇</div><div value="JR">粳稻</div><div value="FG">玻璃</div><div value="CF">郑棉</div><div value="AP">苹果</div>');
 
 
     //刷新数据
-    $('#sjs div').each(function(index,obj){
+    $('#sjs div').each(function (index, obj) {
         var nameValSearch = $(obj);
         var nameText = nameValSearch.text();
         $(obj).append('<div class="ma"></div>');
 
-        $.each(cc,function(index,obj1){
-            if(obj1.value==nameValSearch.attr('value')){
-                 $.each(obj1.data,function(index,obj2){
-                      nameValSearch.find('.ma').append('<span mkt="069001005" name='+nameText+'>'+obj2[0]+'</span>');
-                 });
+        $.each(cc, function (index, obj1) {
+            if (obj1.value == nameValSearch.attr('value')) {
+                $.each(obj1.data, function (index, obj2) {
+                    nameValSearch.find('.ma').append('<span mkt="069001005" name=' + nameText + '>' + obj2[0] + '</span>');
+                });
             }
 
         });
 
     });
-    $('#djs div').each(function(index,obj){
+    $('#djs div').each(function (index, obj) {
         var nameValSearch = $(obj);
         var nameText = nameValSearch.text();
         $(obj).append('<div class="ma"></div>');
-        $.each(cc,function(index,obj1){
-            if(obj1.value==nameValSearch.attr('value')){
+        $.each(cc, function (index, obj1) {
+            if (obj1.value == nameValSearch.attr('value')) {
 
-                 $.each(obj1.data,function(index,obj2){
-                      nameValSearch.find('.ma').append('<span mkt="069001007" name='+nameText+'>'+obj2[0]+'</span>');
-                 });
+                $.each(obj1.data, function (index, obj2) {
+                    nameValSearch.find('.ma').append('<span mkt="069001007" name=' + nameText + '>' + obj2[0] + '</span>');
+                });
             }
 
         });
 
     });
-    $('#zjs div').each(function(index,obj){
+    $('#zjs div').each(function (index, obj) {
         var nameValSearch = $(obj);
         var nameText = nameValSearch.text();
         $(obj).append('<div class="ma"></div>');
-        $.each(cc,function(index,obj1){
-            if(obj1.value==nameValSearch.attr('value')){
+        $.each(cc, function (index, obj1) {
+            if (obj1.value == nameValSearch.attr('value')) {
 
-                 $.each(obj1.data,function(index,obj2){
-                      nameValSearch.find('.ma').append('<span mkt="069001008" name='+nameText+'>'+obj2[0]+'</span>');
-                 });
+                $.each(obj1.data, function (index, obj2) {
+                    nameValSearch.find('.ma').append('<span mkt="069001008" name=' + nameText + '>' + obj2[0] + '</span>');
+                });
             }
 
         });
 
     });
     //绑定点击事件
-    $('.js div').each(function(index,obj){
+    $('.js div').each(function (index, obj) {
 
         var elem = $(obj);
         elem.hover(
-            function(){
+            function () {
                 $(this).addClass("hover");
 
             },
-            function(){
-               $(this).removeClass("hover");
+            function () {
+                $(this).removeClass("hover");
             }
         );
 
-      //http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=2018-07-23&mkt=069001008&code=zc1808&sc=ZC&cb=callback&callback=callback&_=1532415034323
-      //http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=2018-07-23&mkt=069001008&code=zc1808&sc=ZC&cb=callback&callback=callback&_=1532415034325
+        //http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=2018-07-23&mkt=069001008&code=zc1808&sc=ZC&cb=callback&callback=callback&_=1532415034323
+        //http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=2018-07-23&mkt=069001008&code=zc1808&sc=ZC&cb=callback&callback=callback&_=1532415034325
         //timeline.html?ex=069001007&va=JD&ct=jd1901
         var elemList = elem.find('span');
         var changeLi = $(".IF").find("li")[2];
 
-        for(var i=0;i<elemList.length;i++){
-           (function(obj){
-               obj.onclick = function(){
-                   document.getElementById("PageNav").style.display = "none";
-                   var sz = $(this).parent().parent();
-                   var dataUrl = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=" + document.getElementById('inputDate').value + "&mkt=" + $(this).attr('mkt') + "&code=" +$(this).text() + "&sc=" + sz.attr('value');
-                   //更改顶部select选项
-                   /*
-                   $("#futures_exchange option").attr("selected", false);
-                   $("#futures_exchange").find("option[value="+$(this).attr('mkt')+"]").attr("selected", true);
-                   s.selected(a, { value: exchange });
-                   $("#futures_variety option").attr("selected", false);
-                   $("#futures_variety").find("option[value="+sz.attr('value')+"]").attr("selected", true);
-                   */
-                  // s.selected(b, { value: variety });
-                   var url = "http://data.eastmoney.com/futures/sh/timeline.html?"+"ex="+ $(this).attr('mkt')+"&va="+ sz.attr('value')+"&ct="+$(this).text();
-                   console.log($(changeLi).find("a").attr("href",url).attr("target","_blank").attr('onclick','*'));
+        for (var i = 0; i < elemList.length; i++) {
+            (function (obj) {
+                obj.onclick = function () {
+                    document.getElementById("PageNav").style.display = "none";
+                    var sz = $(this).parent().parent();
+                    var dataUrl = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd=" + document.getElementById('inputDate').value + "&mkt=" + $(this).attr('mkt') + "&code=" + $(this).text() + "&sc=" + sz.attr('value');
+                    $('#mkt').val($(this).attr('mkt'));
+                    $('#sc').val(sz.attr('value'));
+                    $('#code').val($(this).text());
 
-                   FuturesJS.getData(dataUrl, "qhlhList", 'true', date);
-                   $('#topTit').html($(this).attr('name')+" "+$(this).text() + "合约会员成交持仓龙虎榜");
-                   sz.css("color","red").css("font-weight","bold");
-                   //$("#futures_exchange option").attr("selected", false);
-                   //$("#futures_exchange option[value="+$(this).attr('mkt')+"]").attr("selected", true);
-                   return false;
-               };
-               $(obj).hover(
-                   function(){
-                       $(this).addClass("hover2");
+                    //更改顶部select选项
+                    /*
+                    $("#futures_exchange option").attr("selected", false);
+                    $("#futures_exchange").find("option[value="+$(this).attr('mkt')+"]").attr("selected", true);
+                    s.selected(a, { value: exchange });
+                    $("#futures_variety option").attr("selected", false);
+                    $("#futures_variety").find("option[value="+sz.attr('value')+"]").attr("selected", true);
+                    */
+                    // s.selected(b, { value: variety });
+                    var url = "http://data.eastmoney.com/futures/sh/timeline.html?" + "ex=" + $(this).attr('mkt') + "&va=" + sz.attr('value') + "&ct=" + $(this).text();
+                    console.log($(changeLi).find("a").attr("href", url).attr("target", "_blank").attr('onclick', '*'));
 
-                   },
-                   function(){
-                       $(this).removeClass("hover2");
-                   }
-               );
-           })(elemList[i]);
+                    FuturesJS.getData(dataUrl, "qhlhList", 'true', date);
+                    $('#topTit').html($(this).attr('name') + " " + $(this).text() + "合约会员成交持仓龙虎榜");
+                    sz.css("color", "red").css("font-weight", "bold");
+                    //$("#futures_exchange option").attr("selected", false);
+                    //$("#futures_exchange option[value="+$(this).attr('mkt')+"]").attr("selected", true);
+                    return false;
+                };
+                $(obj).hover(
+                    function () {
+                        $(this).addClass("hover2");
+
+                    },
+                    function () {
+                        $(this).removeClass("hover2");
+                    }
+                );
+            })(elemList[i]);
         }
 
     });
-  var GM_addStyle = GM_addStyle || function(css) {
-    var style = document.createElement("style");
-    style.type = "text/css";
-    style.appendChild(document.createTextNode(css));
-    document.getElementsByTagName("head")[0].appendChild(style);
-  };
 
-  GM_addStyle("\
+    /*
+    要发的请求：http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?
+    type=QHCC&sty=QHSYCC&stat=4&mkt=069001005&sc=FU&cmd=80102901&code=fu1905&name=2&cb=callback&callback=callback&_=1547821220716
+    
+    */
+
+    $('#caiji').click(function () {
+        var ajaxes1 = []; var ajaxes2 = []; var ajaxes = [];
+        $('#ulJdt').find("li a").each(function (i, obj) {
+            ajaxes1.push({ cmd: $(obj).attr('href').substr(-8), cifcoName: $(obj).html() });
+        })
+        $('#ulJkt').find("li a").each(function (i, obj) {
+            ajaxes2.push({ cmd: $(obj).attr('href').substr(-8), cifcoName: $(obj).html() })
+        })
+        ajaxes = [...ajaxes1, ...ajaxes2];
+        console.log(ajaxes);
+        var executeAjax = function () {
+            if (ajaxes.length == 0) {
+                console.log("数据请求完毕！")
+                return;
+            }
+            //http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=4&mkt=069001005&sc=FU&cmd=80102901&code=fu1905&name=2&cb=callback&callback=callback&_=1547821220716
+            var obj = ajaxes.shift();
+            $.ajax({
+                scriptCharset: "utf-8",
+                url: "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=4" + "&mkt=" + $("#mkt").val() + "&sc=" + $("#sc").val() + "&cmd=" + obj.cmd + "&code=" + $("#code").val() + "&name=2&cb=callback",
+                dataType: "jsonp",
+                jsonpCallback: "callback",
+                success: function (data) {
+
+                    $.post('http://localhost:8080/school2/jiesebang/collectData2.php', {
+                        cifcoName: obj.cifcoName,
+                        futureName: $("#code").val(),
+                        datas: data
+                    }, function () {
+
+                        console.log("还剩:" + (ajaxes.length - 1) + ' ok');
+                        if (ajaxes.length > 0) {
+                            executeAjax();
+                        }
+                    })
+                }
+
+            })
+        }
+        executeAjax();
+    })
+
+    var GM_addStyle = GM_addStyle || function (css) {
+        var style = document.createElement("style");
+        style.type = "text/css";
+        style.appendChild(document.createTextNode(css));
+        document.getElementsByTagName("head")[0].appendChild(style);
+    };
+
+    GM_addStyle("\
+  .bt2 {\
+    position:absolute;\
+    top:341px;\
+    left:450px;\
+  }\
+  ");
+
+    GM_addStyle("\
    .sjs div,.djs div,.zjs div{\
     float:left;\
     width:80px;\
@@ -147,12 +213,12 @@
     position:relative;\
   }\
   ");
-  GM_addStyle("\
+    GM_addStyle("\
    .js{\
     margin:0px;\
   }\
   ");
-  GM_addStyle("\
+    GM_addStyle("\
   .ss9 h5{\
     clear:both;\
     overflow:hidden;\
@@ -160,7 +226,7 @@
   }\
   ");
 
-  GM_addStyle("\
+    GM_addStyle("\
   div.ma {\
     clear:both;\
     display:block;\
@@ -174,13 +240,13 @@
   }\
   ");
 
-  GM_addStyle("\
+    GM_addStyle("\
   .hover div.ma{\
     overflow:auto;\
     display:block;\
   }\
   ");
-  GM_addStyle("\
+    GM_addStyle("\
   .ma span{\
     display:block;\
     background:#fff;\
@@ -188,7 +254,7 @@
     color:#000;\
   }\
   ");
-  GM_addStyle("\
+    GM_addStyle("\
   div.ma span.hover2 {\
     display:block;\
     background:#e5f3ff;\

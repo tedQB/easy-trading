@@ -59,7 +59,7 @@ def task(futureName, starttime):
          except Exception as e:
             conn.rollback()
          finally:
-            print (date_val+" "+futureName+"合约采集结束")
+            print (date_val+" "+futureName+"合约收盘价采集结束")
             conn.close()
 
    except Exception as e:
