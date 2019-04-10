@@ -15,7 +15,7 @@ eg: single.py FU1909 2019-04-09
 python3 single.py |[time]
 eg: ceshi.py 2019-04-09
 ``` 
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=300>
+<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
 
 
 ## tampermonkey
