@@ -7,11 +7,15 @@
 // @match        *://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=F*
 // @grant        GM_addStyle
 // @require      https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js
+// @require      https://raw.githubusercontent.com/tedQB/easymoney/master/tampermonkey/category2.js?timestamp=3535435
+
+
 // ==/UserScript==
 
 (function () {
     'use strict';
 
+    console.log(catejson);
     //缓存框架--begin
     var config = {
         debug: true
@@ -224,114 +228,32 @@
         var hrefNext = changeURLArg(window.location.href, 'pageIndex', currentPage + 1);
         var hrefLast = changeURLArg(window.location.href, 'pageIndex', currentPage - 1);
         $("#json2").before("<span style='position:absolute; top:65px; left:544px; width:200px; '><a href='" + hrefLast + "' style='text-decoration:none;'>上一页</a> <a href='" + hrefNext + "' style='text-decoration:none;'>下一页</a></span>");
+        var urlTextHead = "<div class='tree'><ul class='inner'>";
+        var urlTextFoot = "</ul></div>";
+        var urlTextBody = [];
 
-        //树形模块
-        var urlText = "<div class='tree' style='position:fixed; top:20px; left:0px; width:100px; background:#fff;  margin-left:0px;'><ul class='inner'>"
-            + "<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888005001&pageIndex=1&limit=100&sort=date&order=desc'>全部新闻</a></li>"
-            + "<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888005003&pageIndex=1&limit=100&sort=date&order=desc'>财经要闻</a></li>"
-            + "<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=F888006&limit=8&pageIndex=1'>媒体新闻</a></li>"
-            + "<li class=''><a href='#' class='sd'>政府新闻板块</a>"
-            + " <ul class='close'><li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=F888019&limit=8&pageIndex=1'>政府聚合</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888019002&pageIndex=1&limit=50&sort=date&order=desc'>国务院</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888019003&pageIndex=1&limit=50&sort=date&order=desc'>发改委</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888019004&pageIndex=1&limit=50&sort=date&order=desc'>国资委</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888019005&pageIndex=1&limit=50&sort=date&order=desc'>央行</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888019007&pageIndex=1&limit=50&sort=date&order=desc'>工信部</a></li>"
-            + " </ul></li>"
-            + "<li class=''><a href='#' class='sd'>期货品种</a>"
-            + " <ul class='close'>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016001&pageIndex=1&limit=50&sort=date&order=desc'>原油</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016002&pageIndex=1&limit=50&sort=date&order=desc'>燃料油</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016003&pageIndex=1&limit=50&sort=date&order=desc'>动力煤</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016034&pageIndex=1&limit=50&sort=date&order=desc'>PTA</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016032&pageIndex=1&limit=50&sort=date&order=desc'>沥青</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016007&pageIndex=1&limit=50&sort=date&order=desc'>钢材</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016008&pageIndex=1&limit=50&sort=date&order=desc'>铁矿石</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016004&pageIndex=1&limit=50&sort=date&order=desc'>焦煤</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016005&pageIndex=1&limit=50&sort=date&order=desc'>焦炭</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016035&pageIndex=1&limit=50&sort=date&order=desc'>甲醇</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016018&pageIndex=1&limit=50&sort=date&order=desc'>豆粕</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016017&pageIndex=1&limit=50&sort=date&order=desc'>大豆</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016023&pageIndex=1&limit=50&sort=date&order=desc'>糖</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016024&pageIndex=1&limit=50&sort=date&order=desc'>棉花</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888016029&pageIndex=1&limit=50&sort=date&order=desc'>鸡蛋</a></li>"
-            + " </ul></li>"
-            + "<li class=''><a href='#' class='sd'>行业分类</a>"
-            + " <ul class='close'>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020001&pageIndex=1&limit=50&sort=date&order=desc'>房地产</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020002&pageIndex=1&limit=50&sort=date&order=desc'>银行业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020003&pageIndex=1&limit=50&sort=date&order=desc'>证券业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020004&pageIndex=1&limit=50&sort=date&order=desc'>保险业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020005&pageIndex=1&limit=50&sort=date&order=desc'>信托业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020006&pageIndex=1&limit=50&sort=date&order=desc'>担保业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020007&pageIndex=1&limit=50&sort=date&order=desc'>钢铁</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020008&pageIndex=1&limit=50&sort=date&order=desc'>煤炭</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020009&pageIndex=1&limit=50&sort=date&order=desc'>汽车制造</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020010&pageIndex=1&limit=50&sort=date&order=desc'>互联网</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020011&pageIndex=1&limit=50&sort=date&order=desc'>家用电器</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020012&pageIndex=1&limit=50&sort=date&order=desc'>石油天然气</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020013&pageIndex=1&limit=50&sort=date&order=desc'>贵金属</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020014&pageIndex=1&limit=50&sort=date&order=desc'>有色金属</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020015&pageIndex=1&limit=50&sort=date&order=desc'>基础化工</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020016&pageIndex=1&limit=50&sort=date&order=desc'>化工农药</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020017&pageIndex=1&limit=50&sort=date&order=desc'>化纤</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020018&pageIndex=1&limit=50&sort=date&order=desc'>造纸包装</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020019&pageIndex=1&limit=50&sort=date&order=desc'>建筑</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020020&pageIndex=1&limit=50&sort=date&order=desc'>建材</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020021&pageIndex=1&limit=50&sort=date&order=desc'>林木</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020022&pageIndex=1&limit=50&sort=date&order=desc'>航空机场</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020023&pageIndex=1&limit=50&sort=date&order=desc'>物流</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020024&pageIndex=1&limit=50&sort=date&order=desc'>铁路公路</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020025&pageIndex=1&limit=50&sort=date&order=desc'>海运港口</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020026&pageIndex=1&limit=50&sort=date&order=desc'>国防军工</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020027&pageIndex=1&limit=50&sort=date&order=desc'>工业机械</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020028&pageIndex=1&limit=50&sort=date&order=desc'>船舶重工</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020029&pageIndex=1&limit=50&sort=date&order=desc'>电气设备</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020030&pageIndex=1&limit=50&sort=date&order=desc'>计算机</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020031&pageIndex=1&limit=50&sort=date&order=desc'>通信设备</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020032&pageIndex=1&limit=50&sort=date&order=desc'>电子设备</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020033&pageIndex=1&limit=50&sort=date&order=desc'>软件</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020034&pageIndex=1&limit=50&sort=date&order=desc'>电信服务</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020035&pageIndex=1&limit=50&sort=date&order=desc'>零售</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020036&pageIndex=1&limit=50&sort=date&order=desc'>贸易</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020037&pageIndex=1&limit=50&sort=date&order=desc'>纺织服装</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020038&pageIndex=1&limit=50&sort=date&order=desc'>消费电子</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020039&pageIndex=1&limit=50&sort=date&order=desc'>半导体</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020040&pageIndex=1&limit=50&sort=date&order=desc'>家居用品</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020041&pageIndex=1&limit=50&sort=date&order=desc'>文化传媒</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020042&pageIndex=1&limit=50&sort=date&order=desc'>娱乐休闲</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020043&pageIndex=1&limit=50&sort=date&order=desc'>日化</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020044&pageIndex=1&limit=50&sort=date&order=desc'>农产品</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020045&pageIndex=1&limit=50&sort=date&order=desc'>食品饮料</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020046&pageIndex=1&limit=50&sort=date&order=desc'>酒业</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020047&pageIndex=1&limit=50&sort=date&order=desc'>餐饮旅游</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020048&pageIndex=1&limit=50&sort=date&order=desc'>医疗保健</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020049&pageIndex=1&limit=50&sort=date&order=desc'>生物科技</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020050&pageIndex=1&limit=50&sort=date&order=desc'>电力</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020051&pageIndex=1&limit=50&sort=date&order=desc'>水务</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020052&pageIndex=1&limit=50&sort=date&order=desc'>燃气</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020053&pageIndex=1&limit=50&sort=date&order=desc'>环保</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020054&pageIndex=1&limit=50&sort=date&order=desc'>新能源</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020055&pageIndex=1&limit=50&sort=date&order=desc'>风力发电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020056&pageIndex=1&limit=50&sort=date&order=desc'>光伏发电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020057&pageIndex=1&limit=50&sort=date&order=desc'>火力发电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020058&pageIndex=1&limit=50&sort=date&order=desc'>水力发电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020059&pageIndex=1&limit=50&sort=date&order=desc'>核电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020060&pageIndex=1&limit=50&sort=date&order=desc'>智能电网</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020061&pageIndex=1&limit=50&sort=date&order=desc'>输配电</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020062&pageIndex=1&limit=50&sort=date&order=desc'>电线电缆</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020063&pageIndex=1&limit=50&sort=date&order=desc'>储能</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020064&pageIndex=1&limit=50&sort=date&order=desc'>通用机械</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020065&pageIndex=1&limit=50&sort=date&order=desc'>仪器仪表</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020066&pageIndex=1&limit=50&sort=date&order=desc'>专用设备</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020067&pageIndex=1&limit=50&sort=date&order=desc'>金属制品</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020068&pageIndex=1&limit=50&sort=date&order=desc'>运输设备</a></li>"
-            + "  <li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=S888020069&pageIndex=1&limit=50&sort=date&order=desc'>运输设备</a></li>"
-            + " </ul></li>"
-            + "</ul></div>";
+        for (var i in catejson) {
+            if (catejson[i].constructor === Object) {
+                urlTextBody.push(`<li class=''><a href='#' class='sd'>${i}</a><ul class='close'>`);
+                for (var j in catejson[i]) {
+                    if (catejson[i][j].indexOf("F") != -1) {
+                        urlTextBody.push(`<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=${catejson[i][j]}&limit=8&pageIndex=1'>${j}</a></li>`);
+                    } else {
+                        urlTextBody.push(`<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=${catejson[i][j]}&pageIndex=1&limit=100&sort=date&order=desc'>${j}</a></li>`);
+                    }
+                }
+                urlTextBody.push(`</ul></li>`);
+            } else {
+                urlTextBody.push(`<li><a href='http://app.jg.eastmoney.com/NewsData/GetNewsById.do?id=${catejson[i]}&pageIndex=1&limit=100&sort=date&order=desc'>${i}</a></li>`);
+            }
+        }
 
+        var treeText = urlTextHead + urlTextBody.join("") + urlTextFoot;
 
-        $("#json2").append(urlText);
+        $("#json2").append(treeText);
+
+        $("#json2").append("<span style='position:absolute; margin-bottom:10px; left:544px; width:200px; '><a href='" + hrefLast + "' style='text-decoration:none;'>上一页</a> <a href='" + hrefNext + "' style='text-decoration:none;'>下一页</a></span>");
+
         $('body').addClass('open');
 
         $(".tree li a").css("text-decoration", "none").css("display", "block").css("height", "30px").css("line-height", "30px").css("padding-left", "10px");
@@ -368,7 +290,7 @@
     body{ display:none; }
     .close{ display:none; margin-left:10px; }
     .open{ display:block; }
-    .tree{ height:650px; padding-right:5px; overflow-y:scroll}
+    .tree{ height:650px; padding-right:5px; overflow-y:scroll; position:fixed; top:20px; left:0px; width:100px; background:#fff;  margin-left:0px;}
     .link{ background:rgba(235,238,249,1)}
     .inner{ margin-left:0px; }
   `);
