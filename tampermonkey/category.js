@@ -1,4 +1,4 @@
-window.data = {
+window.catejson = {
 
     '全部新闻': 'S888005001',
     '财经要闻': 'S888005001',
