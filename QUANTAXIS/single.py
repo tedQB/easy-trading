@@ -82,7 +82,7 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
     try:
         j = json.loads(re.findall(r'^(.*)$',
                               response.read().decode('utf-8'))[0])
-        i = 120
+        i = 60
         for row in j['result']:
             if i>0:
                 riqi = row['日期']
@@ -117,7 +117,7 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
     try:
         j = json.loads(re.findall(r'^\w+\((.*)\)$',
                                   response.read().decode('utf-8'))[0])
-        i = 3
+        i = 120
         for i in range(len(j)):
             if i > 0:
                 row = j[i].split(",")
