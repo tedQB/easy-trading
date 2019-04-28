@@ -104,5 +104,5 @@
     }
 }
     window.catejson = catejson
-})()
+})();
 
