@@ -1,4 +1,5 @@
-window.catejson = {
+(function(){ 
+    var catejson = {
 
     '全部新闻': 'S888005001',
     '财经要闻': 'S888005001',
@@ -102,3 +103,6 @@ window.catejson = {
         '运输设备': 'S888020069'
     }
 }
+    window.catejson = catejson
+})()
+
