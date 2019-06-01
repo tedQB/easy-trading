@@ -48,8 +48,14 @@ eg: ceshi.py 2019-04-09
 
 ## 系统截图
 <img src="https://github.com/tedQB/easy-trading/blob/master/img/409.png?raw=true" width=400>
+
 <img src="https://github.com/tedQB/easy-trading/blob/master/img/410.png?raw=true" width=400>
 
+## 量化图形
+
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/411.jpg?raw=true" width=600>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/412.jpg?raw=true" width=600>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/413.jpg?raw=true" width=600>
 
 ## License
 

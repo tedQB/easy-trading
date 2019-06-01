@@ -52,8 +52,8 @@ chrome 安装 tampermonkey
 ## 系统截图
 <img src="https://github.com/tedQB/easy-trading/blob/master/img/401.png?raw=true" width=400>
 <img src="https://github.com/tedQB/easy-trading/blob/master/img/402.png?raw=true" width=400>
-<img src="https://github.com/tedQB/easy-trading/blob/master/img/403.png?raw=true" width=400>
-<img src="https://github.com/tedQB/easy-trading/blob/master/img/404.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/403.jpg?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/404.jpg?raw=true" width=400>
 
 
 ```
