@@ -50,10 +50,10 @@ chrome 安装 tampermonkey
 
 
 ## 系统截图
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/401.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/402.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/403.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/404.png?raw=true" width=400>
 
 
 ```
@@ -73,10 +73,9 @@ chrome 安装 tampermonkey
 
 
 ## 系统截图
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
-<img src="https://github.com/tedQB/easymoney/blob/master/img/Snip20190410_12.png" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/405.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/406.png?raw=true" width=400>
+<img src="https://github.com/tedQB/easy-trading/blob/master/img/407.png?raw=true" width=400>
 
 ## License
 
