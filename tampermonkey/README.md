@@ -71,6 +71,10 @@ chrome 安装 tampermonkey
 - [x] 子类目渲染 --完成
 - [x] 搜索功能 -- 完成
 
+## 待实现功能
+
+- [ ] 接口数据保存至本地
+- [ ] 对新闻关键进行采集，智能训练分析评估出当前市场情绪。
 
 ## 系统截图
 <img src="https://github.com/tedQB/easy-trading/blob/master/img/405.png?raw=true" width=400>
