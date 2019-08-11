@@ -6,202 +6,208 @@ import re
 
 def get_market_own(key):
     market = { 
-            "AG":{ 
+            "AU":{
+                'Market':"069001005",
+            },
+            "AG":{ #沪银
                 'Market': "069001005",
                 'code':'ag'
             },
-            "AL": {
+            "AL": {#沪铝
                 'Market': "069001005",
                 'code': 'al'
             },
-            "AU": {
+            "AU": {#沪金
                 'Market': "069001005",
                 'code': 'bu'
             },
-            "BU": {
+            "BU": {#沥青
                 'Market': "069001005",
                 'code': 'bu'
             },
-            "CU": {
+            "CU": {#沪铜
                 'Market': "069001005",
                 'code': 'cu'
             },
-            "FU": {
+            "FU": {#燃油
                 'Market': "069001005",
                 'code': 'fu'
             },
-            "HC": {
+            "HC": {#热卷
                 'Market': "069001005",
                 'code': 'fu'
             },
-            "NI": {
+            "NI": {#沪镍
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "PB": {
+            "PB": {#沪铅
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "RB": {
+            "RB": {#螺纹钢
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "RU": {
+            "RU": {#橡胶
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "SN": {
+            "SN": {#沪xin
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "SP": {
+            "SP": {#纸浆
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "ZN": {
+            "ZN": { #沪锌
                 'Market': "069001005",
                 'code': 'ag'
             },
-            "A": {
+            "I": { #铁矿石
                 'Market': "069001007",
                 'code': 'ag'
             },
-            "B": {
+                    "J": { #焦炭
                 'Market': "069001007",
                 'code': 'ag'
             },
-            "C": {
+                    "JD": { #鸡蛋
                 'Market': "069001007",
                 'code': 'ag'
             },
-            "CS": {
+                    "JM": { #焦煤
                 'Market': "069001007",
                 'code': 'ag'
             },
-            "I": {
+                    "L": { #塑料
                 'Market': "069001007",
                 'code': 'ag'
             },
-                    "J": {
+                    "M": {#豆粕
                 'Market': "069001007",
                 'code': 'ag'
             },
-                    "JD": {
+                    "P": { #棕榈
                 'Market': "069001007",
                 'code': 'ag'
             },
-                    "JM": {
+            "Y": { #豆油
                 'Market': "069001007",
                 'code': 'ag'
             },
-                    "L": {
+            "EG": {#乙二醇
                 'Market': "069001007",
                 'code': 'ag'
             },
-                    "M": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-                    "P": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-                    "PP": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-                    "V": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-                    "Y": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-                    "EG": {
-                'Market': "069001007",
-                'code': 'ag'
-            },
-            "ZC": {
+            "ZC": {#郑煤
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "WH": {
+            "TA": { #PTA
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "TA": {
+            "SR": { #白糖
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "SR": {
+            "SM": { #硅锰
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "SM": {
+            "SF": { #硅铁
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "SF": {
+            "RM": { #菜粕
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "RM": {
+            "OI": { #郑油
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "PM": {
+            "MA": { #郑醇
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "OI": {
+            "FG": {#玻璃
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "MA": {
+            "AP": { #苹果
                 'Market': "069001008",
                 'code': 'ag'
             },
-            "JR": {
-                'Market': "069001008",
-                'code': 'ag'
+            "CJ":{ #红枣
+                'Market':"069001008",   
             },
-            "FG": {
-                'Market': "069001008",
-                'code': 'ag'
-            },
-            "CF": {
-                'Market': "069001008",
-                'code': 'ag'
-            },
-            "AP": {
-                'Market': "069001008",
-                'code': 'ag'
-            },
-            "IF":{ 
+            "CF":{ #郑棉
+                'Market':"069001008",
+            },    
+            "IF":{ #沪深300股指
                 "Market": "069001009",
             }, 
-            "IC": {
+            "IC": { #中证500期货
                 "Market": "069001009",
             },
-            "IH": {
+            "IH": { #上证50期货
                 "Market": "069001009",
-            },
-            "T": {
-                "Market": "069001009",
-            },
-            "TF": {
-                "Market": "069001009",
-            },
-            "TS": {
-                "Market": "069001009",
-            },
-            "LR":{ 
-                "Market":"****"
-            },
-            "RS": {
-                'Market': "069001005",
-            },
+            },  
+            # "A": { #豆一
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },
+            # "B": { #豆二
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },            
+            # "C": {#玉米
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },
+            # "CS": { #淀粉
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },            
+            # "PP": { #PP
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },
+            #         "V": {
+            #     'Market': "069001007",
+            #     'code': 'ag'
+            # },              
+            # "WH": { #郑麦
+            #     'Market': "069001008",
+            #     'code': 'ag'
+            # },            
+            # "PM": { #普麦
+            #     'Market': "069001008",
+            #     'code': 'ag'
+            # },                   
+            # "JR": { 粳稻
+            #     'Market': "069001008",
+            #     'code': 'ag'
+            # },            
+            #"T": { 十债
+            #    "Market": "069001009",
+            #},           
+            #"TF": { 五债
+            #    "Market": "069001009",
+            #},                   
+            #"TS": { #二债
+            #    "Market": "069001009",
+            #},           
+            #"LR":{  #晚稻
+             #   "Market":"****"
+            #},
+            #"RS": { #菜籽
+            #    'Market': "069001005",
+            #},
+
     }
     return market[key]["Market"]
         

@@ -40,6 +40,7 @@ def task(futureName, starttime):
    nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
    try:
       df1 = fetchData(futureName, starttime, nowTime)
+      print(df1)
       close = df1[u'close']
       date = df1[u'date']
       idx = len(date)

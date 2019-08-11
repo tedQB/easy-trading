@@ -101,7 +101,7 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
 
     except json.decoder.JSONDecodeError:
         print("catch error", code)
-
+        
         #print(nowTime+" "+code+"合约采集结束")
     
 

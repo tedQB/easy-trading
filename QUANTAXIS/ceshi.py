@@ -97,7 +97,7 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
                 insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
                         kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
                 i=i-1
-
+                
     except json.decoder.JSONDecodeError:
         print("catch error", code)
 
