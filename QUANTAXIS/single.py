@@ -37,9 +37,10 @@ def insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum, ko
     finally:
         conn.close()
 
-
+#获取具体时间具体品种龙虎榜数据全貌        
 def get_winners_list_data(code, sc, mkt, nowTime):
     url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd='+nowTime+'&mkt='+mkt+'&code='+code+'&sc='+sc+'&cb=callback&callback=callback&_=1551263991687'
+    print(url)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
     }
@@ -64,7 +65,7 @@ def get_winners_list_data(code, sc, mkt, nowTime):
 
 
     except json.decoder.JSONDecodeError:
-        print ("catch error")
+        print ("主力合约表catch error")
 
     #mkt=069001007 大连商品期货交易所 sc=名称缩写M(豆粕) cmd=80098329（期货公司代码）code=m1905(合约代码小写)
 
@@ -100,7 +101,7 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
                 i=i-1
 
     except json.decoder.JSONDecodeError:
-        print("catch error", code)
+        print("龙虎榜catch error", code)
         
         #print(nowTime+" "+code+"合约采集结束")
     
@@ -141,10 +142,12 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
         #print(nowTime+" "+code+"合约采集结束")
 
 def taskSingle(code,nowTime):
-    task(code, date_add(nowTime,-120))   #焦炭
+    task(code, date_add(nowTime,-10))   #焦炭
     remove_digits = str.maketrans('', '', digits)
     sc = code.translate(remove_digits) 
-    mkt = get_market_own(sc) #归属市场 
+    mkts = get_market_own(sc) #归属市场 
+    mkt = mkts["Market"]
+
     print(code+"合约采集开始"+sc+mkt)
     get_winners_list_data(code, sc, mkt, nowTime)
     print(nowTime+" "+code+"合约采集结束")     

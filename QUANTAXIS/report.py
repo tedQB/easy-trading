@@ -6,6 +6,7 @@ import time
 import datetime
 import pymysql
 import sys
+import string
 
 from item import get_newContractList, get_market_own
 from datetime import timedelta
@@ -48,6 +49,20 @@ def getData(sql):
   finally:
       conn.close()    
 
+def insertSignal(sql):
+   try:
+      conn = connDB()
+      cur = conn.cursor()
+      cur.execute(sql)
+      conn.commit()
+
+   except Exception as e:
+      conn.rollback()
+   finally:
+      conn.close()
+
+ 
+
 mailArr = []
 
 def generateMail(riqi,futureName):
@@ -61,35 +76,50 @@ def generateMail(riqi,futureName):
   if(len(jingduoData)>=2):
     print('=========')
     print('净多单')
-    print(jingduoData[0][0],jingduoData[0][1],jingduoData[0][2],jingduoData[0][3])
-    print(jingduoData[1][0],jingduoData[1][1],jingduoData[1][2],jingduoData[1][3])
+    print(i18n(jingduoData[0][0]),jingduoData[0][0],jingduoData[0][1],jingduoData[0][2],jingduoData[0][3])
+    print(i18n(jingduoData[1][0]),jingduoData[1][1],jingduoData[1][2],jingduoData[1][3])
     print('净空单')
-    print(jingkongData[0][0],jingkongData[0][1],jingkongData[0][2],jingkongData[0][3])
-    print(jingkongData[1][0],jingkongData[1][1],jingkongData[1][2],jingkongData[1][3])
+    print(i18n(jingkongData[0][0]),jingkongData[0][1],jingkongData[0][2],jingkongData[0][3])
+    print(i18n(jingkongData[1][0]),jingkongData[1][1],jingkongData[1][2],jingkongData[1][3])
     print('=========')
-    # if format(float(jingduoData[0][3])/float(jingkongData[0][3]),'.3f')>1.764: 
-    #   tempArr.append('多头信号')
-    #   tempArr.append(jingduoData)
-    #   tempArr.append(jingkongData)
+
+    if(float(format(float(jingduoData[0][3])/float(jingkongData[0][3]),'.3f'))>1.764): 
+      tempArr.append(jingduoData)
+      tempArr.append(jingkongData)
+      tempArr.append(1)
+
+
+      insertSignal("UPDATE Price SET signal1 = '%d' where futureName = '%s' and riqi = '%s'" % (
+        1,jingduoData[0][0].upper(), riqi))
       
-    # elif format(float(jingkongData[0][3])/float(jingduoData[0][3]),'.3f')>1.764:
-    #   tempArr.append('空头信号')
-    #   tempArr.append(jingduoData)
-    #   tempArr.append(jingkongData)
+      if(float(format(float(jingduoData[0][3])/float(jingduoData[1][3]),'.3f'))>1.964):
+        tempArr.append(11)
+        insertSignal("UPDATE Price SET signal2 = '%d' where futureName = '%s' and riqi = '%s'" % (
+        11,jingduoData[0][0].upper(), riqi))
 
 
+    if(float(format(float(jingkongData[0][3])/float(jingduoData[0][3]),'.3f'))>1.764): 
+      tempArr.append(jingduoData)
+      tempArr.append(jingkongData)
+      tempArr.append(-1)
+      insertSignal("UPDATE Price SET signal1 = '%d' where futureName = '%s' and riqi = '%s'" % (
+        -1,jingduoData[0][0].upper(), riqi))
+      
+      if(float(format(float(jingkongData[0][3])/float(jingkongData[1][3]),'.3f'))>1.964):
+        tempArr.append(-11)
+        insertSignal("UPDATE Price SET signal2 = '%d' where futureName = '%s' and riqi = '%s'" % (
+        -11,jingduoData[0][0].upper(), riqi))
 
-    #print(type(member))
-    #print(jingduoData['0']['cifcoName'],jingduoData['0']['jingduoNum'])
-    #print(jingduoData['1']['cifcoName'],jingduoData['1']['jingduoNum'])
-    # 测试语句
-    # for row in jingduoData: 
-    #     futureName = row[0]
-    #     cifcoName = row[1]
-    #     jingduoNum = row[4]
-        
-    #     print("futureName",futureName,"cifcoName",cifcoName,"jingduoNum",jingduoNum)
+    if len(tempArr):
+      mailArr.append(tempArr)
+    else:
+      print(tempArr)
 
+def i18n(s):
+    result = ''.join(re.split(r'[^A-Za-z]', s)) #获取品种前缀
+    mkts = get_market_own(result.upper())
+    futureI18n = mkts['i18n']
+    return futureI18n
 
 
 def main(riqi):
@@ -98,7 +128,6 @@ def main(riqi):
     print(riqi)
     selectFutureName = "SELECT distinct futureName from futures WHERE riqi = '"+riqi+"'"
     #returnAllFutureName = 'SELECT * from futures'
-
     try:
         conn = connDB()
         cur = conn.cursor()
@@ -109,7 +138,6 @@ def main(riqi):
         for row in result:
             futureName = row[0]
             generateMail(riqi, futureName) 
-            #print("futureName",futureName)
 
         conn.commit()
 
@@ -119,7 +147,10 @@ def main(riqi):
     finally:
         conn.close()
 
+    print("需要发的邮件",mailArr)
+
+
 if __name__ == '__main__':
-    main('2019-07-19')
+    main('2019-09-04')
 
 

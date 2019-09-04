@@ -146,6 +146,7 @@ if __name__ == '__main__':
     else:
         nowTime = sys.argv[1]
 
+    print('nowTime',nowTime)
     end_price_get(nowTime)
     
     newContract = get_newContractList(nowTime)
@@ -155,7 +156,8 @@ if __name__ == '__main__':
             try:
                 code = x['newContract']  # 最新合约
                 sc = x['value'] #名称缩写大写
-                mkt = get_market_own(sc) #归属市场
+                mkts = get_market_own(sc) #归属市场
+                mkt = mkts["Market"]
                 lens=lens-1
                 print(code+"合约采集开始,还剩"+str(lens)+"条")
                 get_winners_list_data(code, sc, mkt, nowTime)

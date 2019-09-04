@@ -6,155 +6,195 @@ import re
 
 def get_market_own(key):
     market = { 
-            "AU":{
-                'Market':"069001005",
-            },
             "AG":{ #沪银
                 'Market': "069001005",
-                'code':'ag'
+                'code':'ag',
+                'i18n':'沪银'
             },
             "AL": {#沪铝
                 'Market': "069001005",
-                'code': 'al'
+                'code': 'al',
+                'i18n':'沪铝'
             },
             "AU": {#沪金
                 'Market': "069001005",
-                'code': 'bu'
+                'code': 'au',
+                'i18n':'沪金'
             },
             "BU": {#沥青
                 'Market': "069001005",
-                'code': 'bu'
+                'code': 'bu',
+                'i18n':'沥青'
             },
             "CU": {#沪铜
                 'Market': "069001005",
-                'code': 'cu'
+                'code': 'cu',
+                'i18n':'沪铜'
             },
             "FU": {#燃油
                 'Market': "069001005",
-                'code': 'fu'
+                'code': 'fu',
+                'i18n':'燃油'
             },
             "HC": {#热卷
                 'Market': "069001005",
-                'code': 'fu'
+                'code': 'hc',
+                'i18n':'热卷'
             },
             "NI": {#沪镍
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'ni',
+                'i18n':'沪镍'
             },
             "PB": {#沪铅
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'pb',
+                'i18n':'沪铅'
             },
             "RB": {#螺纹钢
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'rb',
+                'i18n':'螺纹钢'
             },
             "RU": {#橡胶
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'ru',
+                'i18n':'橡胶'
             },
-            "SN": {#沪xin
+            "SN": {#沪锡
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'sn',
+                'i18n':'沪锡'
             },
             "SP": {#纸浆
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'ap',
+                'i18n':'纸浆'
             },
             "ZN": { #沪锌
                 'Market': "069001005",
-                'code': 'ag'
+                'code': 'zn',
+                'i18n':'沪锌'
             },
             "I": { #铁矿石
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'ag',
+                'i18n':'沪金'
             },
                     "J": { #焦炭
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'j',
+                'i18n':'焦炭'
             },
                     "JD": { #鸡蛋
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'jd',
+                'i18n':'鸡蛋'
             },
                     "JM": { #焦煤
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'jm',
+                'i18n':'焦煤'
             },
                     "L": { #塑料
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'l',
+                'i18n':'塑料'
             },
                     "M": {#豆粕
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'm',
+                'i18n':'豆粕'
             },
                     "P": { #棕榈
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'p',
+                'i18n':'棕榈'
             },
             "Y": { #豆油
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'y',
+                'i18n':'豆油'
             },
             "EG": {#乙二醇
                 'Market': "069001007",
-                'code': 'ag'
+                'code': 'eg',
+                'i18n':'乙二醇'
             },
             "ZC": {#郑煤
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'zc',
+                'i18n':'郑煤'
             },
             "TA": { #PTA
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'ta',
+                'i18n':'PTA'
             },
             "SR": { #白糖
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'sr',
+                'i18n':'白糖'
             },
             "SM": { #硅锰
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'SM',
+                'i18n':'硅锰'
             },
             "SF": { #硅铁
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'sf',
+                'i18n':'硅铁'
             },
             "RM": { #菜粕
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'rm',
+                'i18n':'菜粕'
             },
             "OI": { #郑油
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'oi',
+                'i18n':'郑油'
             },
             "MA": { #郑醇
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'ma',
+                'i18n':'郑醇'
             },
             "FG": {#玻璃
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'fg',
+                'i18n':'玻璃'
             },
             "AP": { #苹果
                 'Market': "069001008",
-                'code': 'ag'
+                'code': 'ap',
+                'i18n':'苹果'
             },
             "CJ":{ #红枣
-                'Market':"069001008",   
+                'Market':"069001008", 
+                'code':'cj',
+                'i18n':'红枣'  
             },
             "CF":{ #郑棉
                 'Market':"069001008",
+                'code':'cf',
+                'i18n':'郑棉'
             },    
             "IF":{ #沪深300股指
                 "Market": "069001009",
+                'code':'if',
+                'i18n':'沪深300股指'
             }, 
             "IC": { #中证500期货
                 "Market": "069001009",
+                'code':'ic',
+                'i18n':'中证500期货'
             },
             "IH": { #上证50期货
                 "Market": "069001009",
+                'code':'ih',
+                'i18n':'上证50期货'
             },  
             # "A": { #豆一
             #     'Market': "069001007",
@@ -209,7 +249,7 @@ def get_market_own(key):
             #},
 
     }
-    return market[key]["Market"]
+    return market[key]
         
 
 def quote_keys_for_json(json_str):

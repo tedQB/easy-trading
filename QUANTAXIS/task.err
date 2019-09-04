@@ -13,3 +13,64 @@
 /anaconda3/bin/python3: can't open file 'report.py': [Errno 2] No such file or directory
 /anaconda3/bin/python3: can't open file 'report.py': [Errno 2] No such file or directory
 /anaconda3/bin/python3: can't open file 'report.py': [Errno 2] No such file or directory
+Traceback (most recent call last):
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/QALogs.py", line 48, in <module>
+    QA_Setting().get_config('LOG','path', log_path),
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/QASetting.py", line 96, in get_config
+    res = self.client.quantaxis.usersetting.find_one({'section': section})
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/collection.py", line 1269, in find_one
+    for result in cursor.limit(-1):
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/cursor.py", line 1225, in next
+    if len(self.__data) or self._refresh():
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/cursor.py", line 1117, in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1598, in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1551, in __start_session
+    server_session = self._get_server_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1584, in _get_server_session
+    return self._topology.get_server_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/topology.py", line 429, in get_server_session
+    None)
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/topology.py", line 200, in _select_servers_loop
+    self._error_message(selector))
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/chenshuai/Documents/Project/easymoney/QUANTAXIS/report.py", line 13, in <module>
+    from endPrice import end_price_get
+  File "/Users/chenshuai/Documents/Project/easymoney/QUANTAXIS/endPrice.py", line 5, in <module>
+    import QUANTAXIS as QA
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/__init__.py", line 42, in <module>
+    import QUANTAXIS.QACmd
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QACmd/__init__.py", line 35, in <module>
+    from QUANTAXIS.QACmd.runner import run_backtest, run
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QACmd/runner.py", line 5, in <module>
+    from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/__init__.py", line 42, in <module>
+    from QUANTAXIS.QAUtil.QADate import (QA_util_calc_time, QA_util_date_int2str,
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/QADate.py", line 31, in <module>
+    from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/QALogs.py", line 55, in <module>
+    QA_Setting().get_config('LOG','path', log_path),
+  File "/anaconda3/lib/python3.7/site-packages/QUANTAXIS/QAUtil/QASetting.py", line 96, in get_config
+    res = self.client.quantaxis.usersetting.find_one({'section': section})
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/collection.py", line 1269, in find_one
+    for result in cursor.limit(-1):
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/cursor.py", line 1225, in next
+    if len(self.__data) or self._refresh():
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/cursor.py", line 1117, in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1598, in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1551, in __start_session
+    server_session = self._get_server_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/mongo_client.py", line 1584, in _get_server_session
+    return self._topology.get_server_session()
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/topology.py", line 429, in get_server_session
+    None)
+  File "/anaconda3/lib/python3.7/site-packages/pymongo/topology.py", line 200, in _select_servers_loop
+    self._error_message(selector))
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 8] nodename nor servname provided, or not known

@@ -35,12 +35,14 @@ def fetchData(futureName, starttime, nowTime):
        futureName, starttime, nowTime)
 
 
-def task(futureName, starttime):
+def task(futureName, starttime):   
+  #bug 输入历史数据，python3 ceshi.py 2019-07-19 拉到的数据是从2019-07-12到当天的数据
    QA.QA_util_log_info(futureName+'期货收盘价')
    nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
+   print('startTime',starttime)
    try:
       df1 = fetchData(futureName, starttime, nowTime)
-      print(df1)
+      #print(df1)
       close = df1[u'close']
       date = df1[u'date']
       idx = len(date)
