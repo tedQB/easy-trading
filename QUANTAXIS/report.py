@@ -11,6 +11,7 @@ import string
 from item import get_newContractList, get_market_own
 from datetime import timedelta
 from endPrice import end_price_get
+from sendEmail import send_mail
 
 def connDB():
    db = pymysql.connect(
@@ -28,9 +29,11 @@ def getData(sql):
     conn = connDB()
     cur = conn.cursor()
     count = cur.execute(sql)
-    result = cur.fetchall()
-
-    return result
+    if(count == 1):
+        return [0]
+    else:
+        result = cur.fetchall()
+        return result
 
     # #遍历一条数据方式1
     # for row in result:
@@ -44,8 +47,9 @@ def getData(sql):
     conn.commit()
 
   except Exception as e:
-      print("通过主键读取一条记录:" + str(e))
+      print("通过主键读取一条记录:" + str(e), sql)
       conn.rollback()
+
   finally:
       conn.close()    
 
@@ -73,7 +77,8 @@ def generateMail(riqi,futureName):
   jingduoData = getData(jingduo)
   jingkongData = getData(jingkong)
 
-  if(len(jingduoData)>=2):
+  print(len(jingduoData), len(jingkongData))
+  if(len(jingduoData)>=2 and len(jingkongData)>=2):
     print('=========')
     print('净多单')
     print(i18n(jingduoData[0][0]),jingduoData[0][0],jingduoData[0][1],jingduoData[0][2],jingduoData[0][3])
@@ -87,7 +92,6 @@ def generateMail(riqi,futureName):
       tempArr.append(jingduoData)
       tempArr.append(jingkongData)
       tempArr.append(1)
-
 
       insertSignal("UPDATE Price SET signal1 = '%d' where futureName = '%s' and riqi = '%s'" % (
         1,jingduoData[0][0].upper(), riqi))
@@ -133,10 +137,10 @@ def main(riqi):
         cur = conn.cursor()
         count = cur.execute(selectFutureName)
         result = cur.fetchall()
-
         #遍历一条数据方式1
         for row in result:
             futureName = row[0]
+            print('合约名称',futureName)
             generateMail(riqi, futureName) 
 
         conn.commit()
@@ -148,9 +152,9 @@ def main(riqi):
         conn.close()
 
     print("需要发的邮件",mailArr)
-
+    send_mail('测试邮件',mailArr)
 
 if __name__ == '__main__':
-    main('2019-09-04')
+    main('2019-11-18')
 
 

@@ -37,7 +37,7 @@ def insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum, ko
     finally:
         conn.close()
 
-#获取具体时间具体品种龙虎榜数据全貌        
+#获取具体时间具体品种龙虎榜数据全貌
 def get_winners_list_data(code, sc, mkt, nowTime):
     url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd='+nowTime+'&mkt='+mkt+'&code='+code+'&sc='+sc+'&cb=callback&callback=callback&_=1551263991687'
     print(url)
@@ -52,14 +52,14 @@ def get_winners_list_data(code, sc, mkt, nowTime):
         for i in range(len(j[0]['净多头龙虎榜'])):
             x1 = j[0]['净多头龙虎榜'][i].split(",")
             cmd1 = x1[0]
-            cifcoName1 = x1[1]  
+            cifcoName1 = x1[1]
             get_position_buildin_mobile(
                 mkt, sc, cmd1, code, cifcoName1, nowTime, "净多头")
-        
+
         for m in range(len(j[0]['净空头龙虎榜'])):
             x2 = j[0]['净空头龙虎榜'][m].split(",")
             cmd2 = x2[0]
-            cifcoName2 = x2[1]  
+            cifcoName2 = x2[1]
             get_position_buildin_mobile(
                 mkt, sc, cmd2, code, cifcoName2, nowTime, "净空头")
 
@@ -102,9 +102,9 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
 
     except json.decoder.JSONDecodeError:
         print("龙虎榜catch error", code)
-        
+
         #print(nowTime+" "+code+"合约采集结束")
-    
+
 
 
 def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
@@ -141,31 +141,33 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
 
         #print(nowTime+" "+code+"合约采集结束")
 
+
+#-120 采集历史数据天数，今天开始向后倒120天
 def taskSingle(code,nowTime):
-    task(code, date_add(nowTime,-10))   #焦炭
+    task(code, date_add(nowTime,-7))   #焦炭
     remove_digits = str.maketrans('', '', digits)
-    sc = code.translate(remove_digits) 
-    mkts = get_market_own(sc) #归属市场 
+    sc = code.translate(remove_digits)
+    mkts = get_market_own(sc) #归属市场
     mkt = mkts["Market"]
 
     print(code+"合约采集开始"+sc+mkt)
     get_winners_list_data(code, sc, mkt, nowTime)
-    print(nowTime+" "+code+"合约采集结束")     
+    print(nowTime+" "+code+"合约采集结束")
 
 
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     if len(sys.argv)==1:
         print('请输入合约代码？？')
-    elif len(sys.argv)==2:    
+    elif len(sys.argv)==2:
         code = sys.argv[1]
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
     elif len(sys.argv)==3:
-        code = sys.argv[1]   
+        code = sys.argv[1]
         nowTime = sys.argv[2]
     taskSingle(code,nowTime)
 
-
+#single.py FU1909 2019-04-09(今天日期)
 
 
 

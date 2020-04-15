@@ -10,6 +10,7 @@ import sys
 from item import get_newContractList, get_market_own
 from datetime import timedelta
 from endPrice import end_price_get
+from single import taskSingle
 
 def connDB():
    db = pymysql.connect(
@@ -50,14 +51,14 @@ def get_winners_list_data(code, sc, mkt, nowTime):
         for i in range(len(j[0]['净多头龙虎榜'])):
             x1 = j[0]['净多头龙虎榜'][i].split(",")
             cmd1 = x1[0]
-            cifcoName1 = x1[1]  
+            cifcoName1 = x1[1]
             get_position_buildin_mobile(
                 mkt, sc, cmd1, code, cifcoName1, nowTime, "净多头")
-        
+
         for m in range(len(j[0]['净空头龙虎榜'])):
             x2 = j[0]['净空头龙虎榜'][m].split(",")
             cmd2 = x2[0]
-            cifcoName2 = x2[1]  
+            cifcoName2 = x2[1]
             get_position_buildin_mobile(
                 mkt, sc, cmd2, code, cifcoName2, nowTime, "净空头")
 
@@ -97,12 +98,12 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
                 insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
                         kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
                 i=i-1
-                
+
     except json.decoder.JSONDecodeError:
         print("catch error", code)
 
         #print(nowTime+" "+code+"合约采集结束")
-    
+
 
 
 def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
@@ -140,15 +141,15 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
         #print(nowTime+" "+code+"合约采集结束")
 
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     if len(sys.argv)==1:
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
     else:
         nowTime = sys.argv[1]
 
     print('nowTime',nowTime)
-    end_price_get(nowTime)
-    
+    #end_price_get(nowTime)
+
     newContract = get_newContractList(nowTime)
     if newContract!=None:
         lens = len(newContract)
@@ -160,8 +161,9 @@ if __name__ == '__main__':
                 mkt = mkts["Market"]
                 lens=lens-1
                 print(code+"合约采集开始,还剩"+str(lens)+"条")
-                get_winners_list_data(code, sc, mkt, nowTime)
-                print(nowTime+" "+code+"合约采集结束")
+                #get_winners_list_data(code, sc, mkt, nowTime)
+                taskSingle(code,nowTime)
+                #print(nowTime+" "+code+"合约采集结束")
 
             except KeyError:
                 print(sc+"不存在")

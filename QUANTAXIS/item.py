@@ -5,7 +5,7 @@ import re
 
 
 def get_market_own(key):
-    market = { 
+    market = {
             "AG":{ #沪银
                 'Market': "069001005",
                 'code':'ag',
@@ -121,6 +121,26 @@ def get_market_own(key):
                 'code': 'eg',
                 'i18n':'乙二醇'
             },
+            "EB": {#苯乙烯
+                'Market': "069001007",
+                'code': 'eb',
+                'i18n':'苯乙烯'
+            },
+            "PP": { #PP
+                'Market': "069001007",
+                'code': 'pp',
+                'i18n':'聚丙烯'
+            },
+            "PG": {#液化石油气
+                'Market': "069001007",
+                'code': 'pg',
+                'i18n':'液化石油气'
+            },
+             "A": { #豆一
+                  'Market': "069001007",
+                  'code': 'a',
+                  'i18n':'豆一'
+             },
             "ZC": {#郑煤
                 'Market': "069001008",
                 'code': 'zc',
@@ -172,20 +192,20 @@ def get_market_own(key):
                 'i18n':'苹果'
             },
             "CJ":{ #红枣
-                'Market':"069001008", 
+                'Market':"069001008",
                 'code':'cj',
-                'i18n':'红枣'  
+                'i18n':'红枣'
             },
             "CF":{ #郑棉
                 'Market':"069001008",
                 'code':'cf',
                 'i18n':'郑棉'
-            },    
+            },
             "IF":{ #沪深300股指
                 "Market": "069001009",
                 'code':'if',
                 'i18n':'沪深300股指'
-            }, 
+            },
             "IC": { #中证500期货
                 "Market": "069001009",
                 'code':'ic',
@@ -195,15 +215,11 @@ def get_market_own(key):
                 "Market": "069001009",
                 'code':'ih',
                 'i18n':'上证50期货'
-            },  
-            # "A": { #豆一
-            #     'Market': "069001007",
-            #     'code': 'ag'
-            # },
+            },
             # "B": { #豆二
             #     'Market': "069001007",
             #     'code': 'ag'
-            # },            
+            # },
             # "C": {#玉米
             #     'Market': "069001007",
             #     'code': 'ag'
@@ -211,7 +227,7 @@ def get_market_own(key):
             # "CS": { #淀粉
             #     'Market': "069001007",
             #     'code': 'ag'
-            # },            
+            # },
             # "PP": { #PP
             #     'Market': "069001007",
             #     'code': 'ag'
@@ -219,28 +235,28 @@ def get_market_own(key):
             #         "V": {
             #     'Market': "069001007",
             #     'code': 'ag'
-            # },              
+            # },
             # "WH": { #郑麦
             #     'Market': "069001008",
             #     'code': 'ag'
-            # },            
+            # },
             # "PM": { #普麦
             #     'Market': "069001008",
             #     'code': 'ag'
-            # },                   
+            # },
             # "JR": { 粳稻
             #     'Market': "069001008",
             #     'code': 'ag'
-            # },            
+            # },
             #"T": { 十债
             #    "Market": "069001009",
-            #},           
+            #},
             #"TF": { 五债
             #    "Market": "069001009",
-            #},                   
+            #},
             #"TS": { #二债
             #    "Market": "069001009",
-            #},           
+            #},
             #"LR":{  #晚稻
              #   "Market":"****"
             #},
@@ -250,7 +266,7 @@ def get_market_own(key):
 
     }
     return market[key]
-        
+
 
 def quote_keys_for_json(json_str):
     """给键值不带双引号的json字符串的所有键值加上双引号。
@@ -298,7 +314,7 @@ def get_newContractList(nowTime):
 
 
 
-    
+
 
 
 
