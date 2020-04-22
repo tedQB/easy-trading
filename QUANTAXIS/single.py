@@ -143,8 +143,12 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
 
 
 #-120 采集历史数据天数，今天开始向后倒120天
-def taskSingle(code,nowTime):
-    task(code, date_add(nowTime,-7))   #焦炭
+def taskSingle(code,nowTime,day):
+    day = int(day)
+    if day >0:
+        task(code, date_add(nowTime,-day))
+    else:
+        task(code, date_add(nowTime,-7))   #焦炭
     remove_digits = str.maketrans('', '', digits)
     sc = code.translate(remove_digits)
     mkts = get_market_own(sc) #归属市场
@@ -165,7 +169,11 @@ if __name__ == '__main__':
     elif len(sys.argv)==3:
         code = sys.argv[1]
         nowTime = sys.argv[2]
-    taskSingle(code,nowTime)
+    elif len(sys.argv)==4:
+        code = sys.argv[1]
+        nowTime = sys.argv[2]
+        day = sys.argv[3]
+    taskSingle(code,nowTime,day)
 
 #single.py FU1909 2019-04-09(今天日期)
 

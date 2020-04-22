@@ -72,7 +72,6 @@ def task(futureName, starttime):
 def end_price_get(today):
    print (today+"收盘价获取")
    newContract = get_newContractList(today)
-   print(newContract)
    if newContract != None:
       for x in newContract:
          try:

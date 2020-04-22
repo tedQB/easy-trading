@@ -16,6 +16,11 @@ def get_market_own(key):
                 'code': 'al',
                 'i18n':'沪铝'
             },
+            "SS": {#不锈钢
+                'Market': "069001005",
+                'code': 'ss',
+                'i18n':'不锈钢'
+            },
             "AU": {#沪金
                 'Market': "069001005",
                 'code': 'au',
@@ -79,7 +84,7 @@ def get_market_own(key):
             "I": { #铁矿石
                 'Market': "069001007",
                 'code': 'ag',
-                'i18n':'沪金'
+                'i18n':'铁矿石'
             },
                     "J": { #焦炭
                 'Market': "069001007",

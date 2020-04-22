@@ -162,7 +162,7 @@ if __name__ == '__main__':
                 lens=lens-1
                 print(code+"合约采集开始,还剩"+str(lens)+"条")
                 #get_winners_list_data(code, sc, mkt, nowTime)
-                taskSingle(code,nowTime)
+                taskSingle(code,nowTime,0)  # 默认采集7天
                 #print(nowTime+" "+code+"合约采集结束")
 
             except KeyError:
