@@ -86,6 +86,12 @@ def get_market_own(key):
                 'code': 'ag',
                 'i18n':'铁矿石'
             },
+            "LH": { 
+                'Market': "069001007",
+                'code': 'lh',
+                'i18n':'生猪'
+
+            },
                     "J": { #焦炭
                 'Market': "069001007",
                 'code': 'j',
@@ -156,6 +162,16 @@ def get_market_own(key):
                 'code': 'ta',
                 'i18n':'PTA'
             },
+            "SA": { 
+                'Market': "069001008",
+                'code': 'sa',
+                'i18n':'纯碱'
+            },
+            "PK": { 
+                'Market': "069001008",
+                'code': 'pk',
+                'i18n':'花生'
+            },                      
             "SR": { #白糖
                 'Market': "069001008",
                 'code': 'sr',
@@ -221,22 +237,41 @@ def get_market_own(key):
                 'code':'ih',
                 'i18n':'上证50期货'
             },
-            # "B": { #豆二
-            #     'Market': "069001007",
-            #     'code': 'ag'
-            # },
-            # "C": {#玉米
-            #     'Market': "069001007",
-            #     'code': 'ag'
-            # },
-            # "CS": { #淀粉
-            #     'Market': "069001007",
-            #     'code': 'ag'
-            # },
-            # "PP": { #PP
-            #     'Market': "069001007",
-            #     'code': 'ag'
-            # },
+            "T": {
+                "Market": "069001009",
+                'code':'T',
+                'i18n':'10年债'
+            },
+            "TF": {
+                "Market": "069001009",
+                'code':'TF',
+                'i18n':'5年债'
+            },
+            "TS": {
+                "Market": "069001009",
+                'code':'TS',
+                'i18n':'2年债'
+            },            
+            "B": { #豆二
+                 'Market': "069001007",
+                 'code': 'b',
+                 'i18n':'豆二'
+            },
+            "C": {#玉米
+                 'Market': "069001007",
+                 'code': 'c',
+                 'i18n':'玉米'
+            },
+            "CS": { #淀粉
+                 'Market': "069001007",
+                 'code': 'cs',
+                 'i18n':'淀粉'
+            },
+            "PP": { #PP
+                 'Market': "069001007",
+                 'code': 'pp',
+                 'i18n':'PP'
+            }
             #         "V": {
             #     'Market': "069001007",
             #     'code': 'ag'
@@ -253,23 +288,13 @@ def get_market_own(key):
             #     'Market': "069001008",
             #     'code': 'ag'
             # },
-            #"T": { 十债
-            #    "Market": "069001009",
-            #},
-            #"TF": { 五债
-            #    "Market": "069001009",
-            #},
-            #"TS": { #二债
-            #    "Market": "069001009",
-            #},
             #"LR":{  #晚稻
              #   "Market":"****"
             #},
             #"RS": { #菜籽
             #    'Market': "069001005",
             #},
-
-    }
+        }
     return market[key]
 
 
