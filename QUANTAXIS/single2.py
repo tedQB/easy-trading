@@ -24,10 +24,10 @@ def connDB():
    )
    return db
 
-def insertInfos(futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6):
-    print(futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6)
-    insertSql = "replace INTO infos (futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
-               futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6)
+def insertInfos(futureName, riqi, codeLong, smallLong, codeShort, smallShort):
+    print(futureName, riqi, codeLong, smallLong, codeShort, smallShort)
+    insertSql = "replace INTO infos (futureName, riqi, codeLong, smallLong, codeShort, smallShort) VALUES('%s','%s','%s','%s','%s','%s')" % (
+               futureName, riqi, codeLong, smallLong, codeShort, smallShort)
     try:
         conn = connDB()
         cur = conn.cursor()
@@ -79,15 +79,13 @@ def listTask(code, sc, mkt, starttime, today):
             j = json.loads(re.findall(r'^\w+\((.*)\)$',
                                        response.read().decode('utf-8'))[0])
             # 2021-02-28 加入每日小户持仓量，程序化多空头持仓量数据计算爬取
-            lix = [] #成交量龙虎版key 列表
+            lix = []
             for i in range(len(j[0]['成交量龙虎榜'])): #找到程序化席位
                 x1 = j[0]['成交量龙虎榜'][i].split(",")
                 lix.append(x1[1])
 
-            dlix = {} #多头持仓字典 期货公司key:value
-            slix = {} #空头持仓字典 期货公司key:value
-            dlix1 = {}
-            slix1 = {}
+            dlix = {}
+            slix = {}
             for i in range(len(j[0]['多头持仓龙虎榜'])):
                 x1 = j[0]['多头持仓龙虎榜'][i].split(",")
                 dlix[x1[1]] = int(x1[2])
@@ -99,45 +97,23 @@ def listTask(code, sc, mkt, starttime, today):
             codeLong = []
             codeShort = []
 
-            TopLong = {}
-            TopShort = {}
-
-            TopLong6 = []
-            TopShort6 = []
-
             for x in lix :
                 if x in dlix :
                     codeLong.append(dlix[x])
-                    dlix1[x] = dlix.pop(x)
+                    dlix.pop(x)
 
             for x in lix :
                 if x in slix :
                     codeShort.append(slix[x])
-                    slix1[x] = slix.pop(x)
+                    slix.pop(x)
 
-            #intersection = list(set(dlix).intersection(set(slix)))
-            #print('还剩？',dlix,slix)
+            insertInfos(code, date_val, sum(codeLong), sum(dlix.values()), sum(codeShort), sum(slix.values()))
 
-            sl1 = dlix1.keys() & slix1.keys()  #求多空表排除小户并集精确计算程序多空头
-            for x in sl1 :
-                TopLong[x] = dlix1[x] #相同程序化多头
-                TopShort[x] = slix1[x] #相同程序化空头
+            print(sum(codeLong)) 
+            print(sum(dlix.values()))
 
-            for x in lix[0:6] : #取前6名
-                if x in TopLong :
-                    TopLong6.append(TopLong[x])
-                if x in TopShort :
-                    TopShort6.append(TopShort[x])
-
-            #print('处理后',dlix1,slix1)
-            insertInfos(code, date_val, sum(codeLong), sum(dlix.values()), sum(codeShort), sum(slix.values()),sum(TopLong.values()),sum(TopLong6),sum(TopShort.values()),sum(TopShort6))
-
-            #print(sum(codeLong)) 
-            #print(sum(dlix.values()))
-            #print(sum(codeShort))
-            #print(sum(slix.values()))
-            #print('相加前',TopLong5,TopShort5)
-            #print(sum(TopLong5),sum(TopShort5))
+            print(sum(codeShort))
+            print(sum(slix.values()))
 
     except Exception as e:
       print("catch error"+code)
@@ -327,8 +303,8 @@ if __name__ == '__main__':
         code = sys.argv[1]
         nowTime = sys.argv[2]
         day = sys.argv[3]
-    infoSingle(code,nowTime,day)
-    #taskSingle(code,nowTime,day)
+    #infoSingle(code,nowTime,day)
+    taskSingleOld(code,nowTime,day)
 
 #single.py FU1909 2019-04-09(今天日期)
 
