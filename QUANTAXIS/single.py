@@ -51,7 +51,6 @@ def insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum, ko
     finally:
         conn.close()
 
-
 #获取具体时间具体品种龙虎榜数据全貌
 def listTask(code, sc, mkt, starttime, today):
 
@@ -62,14 +61,16 @@ def listTask(code, sc, mkt, starttime, today):
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
     
     print('startTime',starttime, nowTime)
-    try:
-        df1 = fetchData(code, starttime, nowTime)
-        date = df1[u'date']
-        idx = len(date)
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
-        }        
-        while idx > 0:
+
+    df1 = fetchData(code, starttime, nowTime)
+    date = df1[u'date']
+    idx = len(date)
+    print(code, starttime, nowTime, idx)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
+    }        
+    while idx > 0:
+        try:
             idx -= 1
             date_val = date[idx]
             url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=3&fd='+date_val+'&mkt='+mkt+'&code='+code+'&sc='+sc+'&cb=callback&callback=callback&_=1551263991687'
@@ -139,8 +140,9 @@ def listTask(code, sc, mkt, starttime, today):
             #print('相加前',TopLong5,TopShort5)
             #print(sum(TopLong5),sum(TopShort5))
 
-    except Exception as e:
-      print("catch error"+code)
+        except Exception as e:
+          print("catch error"+code)
+          continue
     
 
         # for i in range(len(j[0]['净多头龙虎榜'])):
@@ -158,8 +160,8 @@ def listTask(code, sc, mkt, starttime, today):
         #         mkt, sc, cmd2, code, cifcoName2, nowTime, "净空头")
 
 
-    except json.decoder.JSONDecodeError:
-        print ("主力合约表catch error")
+    #except json.decoder.JSONDecodeError:
+        #print ("主力合约表catch error")
 
     #mkt=069001007 大连商品期货交易所 sc=名称缩写M(豆粕) cmd=80098329（期货公司代码）code=m1905(合约代码小写)
 

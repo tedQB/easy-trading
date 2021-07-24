@@ -245,7 +245,7 @@ def get_market_own(key):
             "TF": {
                 "Market": "069001009",
                 'code':'TF',
-                'i18n':'5年债'
+                'i18n':'5年债',
             },
             "TS": {
                 "Market": "069001009",

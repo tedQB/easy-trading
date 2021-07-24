@@ -1,0 +1,6 @@
+2021-07-20 开始
+2021-07-20 结束
+
+
+
+*/1 * * * * nohup /Users/chenshuai/opt/anaconda3/bin/python3.8 /Users/chenshuai/Documents/Project/easymoney/QUANTAXIS/arank.py > /Users/chenshuai/Documents/Project/easymoney/QUANTAXIS/arank.py.log 2>&1 &

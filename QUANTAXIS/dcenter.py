@@ -10,7 +10,9 @@ import sys
 from item import get_newContractList, get_market_own
 from datetime import timedelta
 from endPrice import end_price_get
-from single import taskSingleOld
+from single import taskSingle
+import akshare as ak
+
 
 def connDB():
    db = pymysql.connect(
@@ -105,40 +107,85 @@ def get_position_buildin_mobile(mkt, sc, cmd, code, cifcoName, nowTime, tit):
         #print(nowTime+" "+code+"合约采集结束")
 
 
+def insertDailyKLine(code, date, opens, highs, lows, close, vols):
+    insertSql = "replace INTO dayLine (code, date, opens, highs, lows, close, vols) VALUES('%s','%s','%s','%s','%s','%s','%s')" % (
+                code, date, opens, highs, lows, close, vols)
+    try:
+        conn = connDB()
+        cur = conn.cursor()
+        cur.execute(insertSql)
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+    finally:
+        conn.close()
 
-def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
-    url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=QHCC&sty=QHSYCC&stat=4" + "&mkt=" + mkt + "&sc=" + sc + "&cmd=" + cmd + "&code=" + code + "&name=2&cb=callback"
+
+def get_data_buildin_akshare(code, nowTime):
+    try:
+        futures_zh_daily_sina_df = ak.futures_zh_daily_sina(symbol=code)
+        date = futures_zh_daily_sina_df['date']
+        opens = futures_zh_daily_sina_df['open']
+        highs = futures_zh_daily_sina_df['high']
+        lows = futures_zh_daily_sina_df['low']
+        closes = futures_zh_daily_sina_df['close']
+        vols = futures_zh_daily_sina_df['volume']
+
+        idx = len(date)
+        while idx > 0:
+            idx -= 1
+            date_val = date[idx]
+            open_val = opens[idx]
+            high_val = highs[idx]
+            low_val = lows[idx]
+            close_val = closes[idx]
+            vol_val = vols[idx]
+            try:
+                insertDailyKLine(code, date_val, open_val, high_val, low_val, close_val, vol_val)
+            except KeyError:
+                print(code+"插入数据错误")
+                continue;
+
+    except Exception as e:
+        print(code+"数据不存在")
+    
+
+
+def get_data_buildin(code, nowTime):
+    url = "http://stock2.finance.sina.com.cn/futures/api/json.php/IndexService.getInnerFuturesDailyKLine?symbol=" +  code
+    #url = "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var=/InnerFuturesNewService.getDailyKLine?symbol=" + code
+    #新浪https接口有防爬机制
+
     print(url)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
     }
     request = urllib.request.Request(url=url, headers=headers)
     response = urllib.request.urlopen(request)
-    try:
-        j = json.loads(re.findall(r'^\w+\((.*)\)$',
-                                  response.read().decode('utf-8'))[0])
-        i = 20
+    #print('response',response.read().decode('utf-8'))
+
+
+    j = json.loads(response.read().decode('utf-8'))
+    #print('j',len(j))
+    if j:
         for i in range(len(j)):
-            if i > 0:
-                row = j[i].split(",")
-                riqi = row[0]
-                jiesuan = row[1]
-                chengjiaoNum =row[2]
-                duodanNum = row[4]
-                kongdanNum = row[7]
-                jingduoNum = row[10]
-                jingkongNum = row[11]
-                longEvePrice = row[5]
-                shortEvePrice = row[8]
-                futureName = code.lower()
-                insertData(futureName, cifcoName, riqi, jiesuan, chengjiaoNum, duodanNum,
-                        kongdanNum, jingduoNum, jingkongNum, longEvePrice, shortEvePrice)
-                i = i-1
+            try:
+                row = j[i]
+                date = row[0]       
+                opens = row[1]      #开盘价     open
+                highs = row[2]      #最高价   high  
+                lows = row[3]       #最低价    low
+                close = row[4]     #收盘价    close
+                vols = row[5]       #成交量    vol
+                insertDailyKLine(code, date, opens, highs, lows, close, vols)
 
-    except json.decoder.JSONDecodeError:
-        print("catch error", code)
+            except KeyError:
+                print(code+"数据不存在")
+                continue;
+    else:
+        print(code+"数据不存在")
 
-        #print(nowTime+" "+code+"合约采集结束")
+    print(nowTime+" "+code+"合约采集结束")
 
 
 if __name__ == '__main__':
@@ -160,9 +207,11 @@ if __name__ == '__main__':
                 mkts = get_market_own(sc) #归属市场
                 mkt = mkts["Market"]
                 lens=lens-1
-                print(code+"合约采集开始,还剩"+str(lens)+"条")
+                print(code+"数据中心采集开始,还剩"+str(lens)+"条")
                 #get_winners_list_data(code, sc, mkt, nowTime)
-                taskSingleOld(code,nowTime,3)
+                get_data_buildin_akshare(code,nowTime)
+                time.sleep(1)
+                #get_data_buildin(code,nowTime) # 默认采集7天
                 #print(nowTime+" "+code+"合约采集结束")
 
             except KeyError:

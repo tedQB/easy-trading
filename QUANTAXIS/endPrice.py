@@ -2,12 +2,19 @@
 # coding: UTF-8
 
 
-import QUANTAXIS as QA
+#import QUANTAXIS as QA
+#import tushare as ts
 import datetime
 import pymysql
 import time
 from datetime import timedelta
 from item import get_newContractList
+from string import digits
+from item import get_market_own
+import pandas as pd
+
+#ts.set_token('15cbb84b1fdd9a026aee178b4a1aae1543aaef4b4a08866f4f0c27f1')
+
 
 def date_add(date_str, days_count=1):
     date_list = time.strptime(date_str, "%Y-%m-%d")
@@ -17,6 +24,11 @@ def date_add(date_str, days_count=1):
     date_result = date_result.strftime("%Y-%m-%d")
     return date_result
 
+def timeAD(timeStr):
+    array = time.strptime(timeStr, u"%Y-%m-%d")
+    publishTime = time.strftime("%Y%m%d", array)
+    #print(publishTime)
+    return publishTime
 
 def connDB():
    db = pymysql.connect(
@@ -30,19 +42,61 @@ def connDB():
    return db
 
 
-def fetchData(futureName, starttime, nowTime):
-   return QA.QAFetch.QATdx.QA_fetch_get_future_day(
-       futureName, starttime, nowTime)
+def QA_fetch_get_future_day(futureName, starttime, nowTime):
+  #select riqi, code, opens, highs, lows, closes, vols from dayLine where riqi between '2021-04-21' and '2021-05-22' and code='I2109'
+  selectSql = "select code, date, opens, highs, lows, close, vols from dayLine where date between '%s' and '%s' and code = '%s'" % (starttime, nowTime, futureName)
+  try:
+    conn = connDB()
+    cur = conn.cursor()
+    #cur.execute(selectSql)
+    #data = cur.fetchall()
+    df = pd.read_sql_query(selectSql, conn)
+    return df
+  except Exception as e:
+    conn.rollback()
+  finally:
+    conn.close()
 
+#接入自己的数据中心
+def fetchData(futureName, starttime, nowTime):
+  print(futureName, starttime, nowTime)
+
+  return QA_fetch_get_future_day(futureName, starttime, nowTime)
+
+#尝试接入tushare
+def fetchData2(futureName, starttime, nowTime):
+   #接入tushare
+   # print(futureName, starttime, nowTime)
+   # remove_digits = str.maketrans('', '', digits)
+   # sc = futureName.translate(remove_digits)   
+   # mkts = get_market_own(sc)
+   # print('mkts',mkts)
+   # if mkts['Market'] == '069001007':
+   #   futureName = futureName+'.DCE'
+   # elif mkts['Market'] == '069001008':
+   #   futureName = futureName+'.CZCE'
+   # elif mkts['Market'] == '069001009':
+   #   futureName = futureName+'.CFFEX'
+   # elif mkts['Market'] == '069001005':
+   #   futureName = futureName+'.SHFE'
+
+ 
+   # print('futureName',futureName,timeAD(starttime),timeAD(nowTime))  
+   # pro = ts.pro_api('15cbb84b1fdd9a026aee178b4a1aae1543aaef4b4a08866f4f0c27f1')
+   # df = pro.fut_daily(ts_code=futureName, start_date=timeAD(starttime), end_date=timeAD(nowTime))
+   # print('???',df['trade_date'],len(df['trade_date']))
+   # 接入QA
+   return false
+   #return QA.QAFetch.QATdx.QA_fetch_get_future_day(futureName, starttime, nowTime)
 
 def task(futureName, starttime):
   #bug 输入历史数据，python3 ceshi.py 2019-07-19 拉到的数据是从2019-07-12到当天的数据
-   QA.QA_util_log_info(futureName+'期货收盘价')
+   print(futureName+'期货收盘价')
    nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
    print('startTime',starttime)
    try:
       df1 = fetchData(futureName, starttime, nowTime)
-      #print(df1)
+     # print('df1',df1)
       close = df1[u'close']
       date = df1[u'date']
       idx = len(date)
