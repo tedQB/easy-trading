@@ -124,7 +124,7 @@ def insertDailyKLine(code, date, opens, highs, lows, close, vols):
 def get_data_buildin_akshare(code, nowTime):
     try:
         futures_zh_daily_sina_df = ak.futures_zh_daily_sina(symbol=code)
-        # d日期， o 开盘价  h 最高价  l最低价  c收盘价  v 成交量  p振幅  s不清楚
+        # d日期， o 开盘价  h 最高价  l最低价  c收盘价  v 成交量  p振幅    ds不清楚
         # print('futures_zh_daily_sina_df',futures_zh_daily_sina_df)
         # ["date", "open", "high", "low", "close", "volume", "hold"]
         date = futures_zh_daily_sina_df['date']
