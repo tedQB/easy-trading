@@ -82,6 +82,11 @@ def date_add(date_str, days_count=1):
     return date_result
 
 
+def get_bank_date(nowTime):
+
+    futures_zh_daily_sina_df = ak.gainian_rank(date=timeAD(nowTime))
+    print('futures_zh_daily_sina_df', futures_zh_daily_sina_df)
+
 def get_data_buildin_akshare(nowTime):
     try:
         futures_zh_daily_sina_df = ak.stock_wc_hot_rank(date=timeAD(nowTime))
@@ -106,7 +111,7 @@ def get_data_buildin_akshare(nowTime):
             date_val = date[idx]
             try:
                 insertDailyKLine(code_val, name_val, heat_val, rank_val, rankj_val, date_val)
-                #insertDailyKLineSec(code_val, name_val, heat_val, rank_val, rankj_val, dateSec)
+                insertDailyKLineSec(code_val, name_val, heat_val, rank_val, rankj_val, dateSec)
             except KeyError:
                 print(code+"插入数据错误")
                 continue;
@@ -118,16 +123,27 @@ def get_data_buildin_akshare(nowTime):
 
 if __name__ == '__main__':
 
-    if len(sys.argv)==1:
-        nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
+    if len(sys.argv)==3:
+        startTime = sys.argv[1]
+        endTime =  sys.argv[2]
+        tt = pd.date_range(pd.to_datetime(startTime),
+                           pd.to_datetime(endTime), freq='D')
+
+    elif len(sys.argv)==2:
+        startTime = sys.argv[1]
+        endTime = datetime.datetime.now().strftime('%Y-%m-%d')
+        tt = pd.date_range(pd.to_datetime(startTime),
+                           pd.to_datetime(endTime), freq='D')
     else:
-        nowTime = sys.argv[1]
+        endTime = datetime.datetime.now().strftime('%Y-%m-%d')
+        tt = pd.date_range(pd.to_datetime(endTime),
+                           pd.to_datetime(endTime), freq='D')
 
     #tt = pd.date_range(start=date_add(nowTime,-60), end=nowTime, freq='D')
-    tt = pd.date_range(start='2021-07-21', end='2021-07-25', freq='D')
 
     for x in tt:
         print(x.strftime('%Y-%m-%d'),'开始')
         get_data_buildin_akshare(x.strftime('%Y-%m-%d'))
+        #get_bank_date(x.strftime('%Y-%m-%d'))
         print(x.strftime('%Y-%m-%d'),'结束')
 

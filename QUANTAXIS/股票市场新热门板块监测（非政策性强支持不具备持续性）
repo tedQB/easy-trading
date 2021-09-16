@@ -1,0 +1,64 @@
+
+
+function getCount(arr, rank,ranktype){ 
+    var obj = {}, k, arr1 = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+        k = arr[i];
+        if (obj[k['gainian']]) 
+
+            obj[k['gainian']]++;
+
+        else 
+
+            obj[k['gainian']] = 1;
+
+    }
+
+    //保存结果{el-'元素'，count-出现次数}
+    for (var o in obj) {
+        var tempstring = ''
+        arr.find(function(item){ 
+            if(item['gainian'] === o){ 
+                tempstring = tempstring+item['name']+' '
+            }
+        })
+        arr1.push({el: o, count: obj[o], name:tempstring});
+
+    }
+
+
+    //排序（降序）
+    arr1.sort(function (n1, n2) {
+
+        return n2.count - n1.count
+
+    });
+
+    //如果ranktype为1，则为升序，反转数组
+
+    if(ranktype===1){
+
+        arr1=arr1.reverse();
+
+    }
+
+    var rank1 = rank || arr1.length;
+
+    return arr1.slice(0,rank1);
+
+}
+var arr = []
+$(".split-i a").each(function(index,obj){
+    var val = $(obj).html();
+    var name = $(obj).parents('tr').find('a.clickTrace').html()
+    if(val=='融资融券'||val=='转融券标的'||val=='富时罗素概念'||val=='富时罗素概念股'||val=='MSCI概念'||val=='标普道琼斯A股'||val=='深股通'||val=='沪股通'||val=='沪股通'||val=='沪股通'||val=='地方国资改革'||val=='参股基金'||val=='央企国资改革'||val=='机构重仓'||val=='新股与次新股'||val=='核准制次新股'){
+        return true
+    } else{
+        arr.push({
+            name:name,
+            gainian:$(obj).html()
+        })
+    }
+})
+//console.log(arr)
+console.log(getCount(arr,null,3))

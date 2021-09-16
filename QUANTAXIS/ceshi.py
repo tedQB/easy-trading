@@ -142,14 +142,23 @@ def get_position_buildin(mkt, sc, cmd, code, cifcoName, nowTime):
 
 
 if __name__ == '__main__':
+    # if len(sys.argv)==1:
+    #     nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
+    # else:
+    #     nowTime = sys.argv[1]
+
+    # print('nowTime',nowTime)
+    # #end_price_get(nowTime)
     if len(sys.argv)==1:
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
-    else:
+        num = 7
+    elif len(sys.argv)==2:
         nowTime = sys.argv[1]
-
-    print('nowTime',nowTime)
-    #end_price_get(nowTime)
-
+        num = 7
+    elif len(sys.argv)==3:
+        nowTime = sys.argv[1]
+        num = sys.argv[2]
+                
     newContract = get_newContractList(nowTime)
     if newContract!=None:
         lens = len(newContract)
@@ -157,12 +166,19 @@ if __name__ == '__main__':
             try:
                 code = x['newContract']  # 最新合约
                 sc = x['value'] #名称缩写大写
-                mkts = get_market_own(sc) #归属市场
-                mkt = mkts["Market"]
-                lens=lens-1
-                print(code+"合约采集开始,还剩"+str(lens)+"条")
+                #mkts = get_market_own(sc) #归属市场
+                #mkt = mkts["Market"]
+                print(code+"数据中心采集开始,还剩"+str(lens)+"条")
+                # data = x['data']
+                # for y in data:
+                #     codey = y[1]
+                #     print('code',codey)
+                #     taskSingle(codey,nowTime,num) # 默认采集7天
+                #     time.sleep(1)
+                # lens=lens-1                
                 #get_winners_list_data(code, sc, mkt, nowTime)
-                taskSingle(code,nowTime,3) # 默认采集7天
+                taskSingle(code,nowTime,num) # 默认采集7天
+                
                 #print(nowTime+" "+code+"合约采集结束")
 
             except KeyError:

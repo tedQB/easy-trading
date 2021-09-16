@@ -124,6 +124,9 @@ def insertDailyKLine(code, date, opens, highs, lows, close, vols):
 def get_data_buildin_akshare(code, nowTime):
     try:
         futures_zh_daily_sina_df = ak.futures_zh_daily_sina(symbol=code)
+        # d日期， o 开盘价  h 最高价  l最低价  c收盘价  v 成交量  p振幅  s不清楚
+        # print('futures_zh_daily_sina_df',futures_zh_daily_sina_df)
+        # ["date", "open", "high", "low", "close", "volume", "hold"]
         date = futures_zh_daily_sina_df['date']
         opens = futures_zh_daily_sina_df['open']
         highs = futures_zh_daily_sina_df['high']
@@ -203,14 +206,20 @@ if __name__ == '__main__':
         for x in newContract:
             try:
                 code = x['newContract']  # 最新合约
+                data = x['data']
                 sc = x['value'] #名称缩写大写
-                mkts = get_market_own(sc) #归属市场
-                mkt = mkts["Market"]
-                lens=lens-1
+                #mkts = get_market_own(sc) #归属市场
+                #mkt = mkts["Market"]
                 print(code+"数据中心采集开始,还剩"+str(lens)+"条")
+                data = x['data']
+                for y in data:
+                    codey = y[1]
+                    print('code',codey)
+                    get_data_buildin_akshare(codey,nowTime)
+                    time.sleep(1)
+                lens=lens-1
                 #get_winners_list_data(code, sc, mkt, nowTime)
-                get_data_buildin_akshare(code,nowTime)
-                time.sleep(1)
+                #get_data_buildin_akshare(code,nowTime)
                 #get_data_buildin(code,nowTime) # 默认采集7天
                 #print(nowTime+" "+code+"合约采集结束")
 

@@ -212,6 +212,11 @@ def get_market_own(key):
                 'code': 'ap',
                 'i18n':'苹果'
             },
+            "UR": { #尿素
+                'Market': "069001008",
+                'code': 'UR',
+                'i18n':'尿素'
+            },            
             "CJ":{ #红枣
                 'Market':"069001008",
                 'code':'cj',

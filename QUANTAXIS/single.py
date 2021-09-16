@@ -24,10 +24,10 @@ def connDB():
    )
    return db
 
-def insertInfos(futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6):
+def insertInfos(futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6, sc):
     print(futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6)
-    insertSql = "replace INTO infos (futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
-               futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6)
+    insertSql = "replace INTO infos (futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6, sc) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
+               futureName, riqi, codeLong, smallLong, codeShort, smallShort, TopLong, TopLong6, TopShort, TopShort6, sc)
     try:
         conn = connDB()
         cur = conn.cursor()
@@ -131,7 +131,7 @@ def listTask(code, sc, mkt, starttime, today):
                     TopShort6.append(TopShort[x])
 
             #print('处理后',dlix1,slix1)
-            insertInfos(code, date_val, sum(codeLong), sum(dlix.values()), sum(codeShort), sum(slix.values()),sum(TopLong.values()),sum(TopLong6),sum(TopShort.values()),sum(TopShort6))
+            insertInfos(code, date_val, sum(codeLong), sum(dlix.values()), sum(codeShort), sum(slix.values()),sum(TopLong.values()),sum(TopLong6),sum(TopShort.values()),sum(TopShort6),sc)
 
             #print(sum(codeLong)) 
             #print(sum(dlix.values()))
